@@ -1,0 +1,40 @@
+const Comment = require("./comment.model");
+const CourseRegistration = require("./courseregistration.model");
+const EducationalCenter = require("./educationalcenter.model");
+const Filial = require("./fillial.model");
+const Like = require("./like.model");
+const Profession = require("./profession.model");
+const ProgramAssignment = require("./programassignment.model");
+const StudyProgram = require("./studyprogram.model");
+const Subject = require("./subject.model");
+const User = require("./user.model");
+
+User.belongsToMany(EducationalCenter, { through: CourseRegistration });
+EducationalCenter.belongsToMany(User, { through: CourseRegistration });
+
+Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
+Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
+StudyProgram.belongsTo(Profession, { foreignKey: "professionId" });
+StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
+
+EducationalCenter.hasMany(Filial, { foreignKey: "educationalCenterId" });
+Filial.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
+
+EducationalCenter.hasMany(Comment, { foreignKey: "educationalCenterId" });
+Comment.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
+
+EducationalCenter.hasMany(Like, { foreignKey: "educationalCenterId" });
+Like.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
+
+module.exports = {
+  User,
+  Profession,
+  Subject,
+  StudyProgram,
+  ProgramAssignment,
+  EducationalCenter,
+  CourseRegistration,
+  Filial,
+  Comment,
+  Like,
+};
