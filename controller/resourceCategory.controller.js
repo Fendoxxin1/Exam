@@ -1,4 +1,4 @@
-const { ResourceCategory } = require("../models/resourceCategory");
+const ResourceCategory = require("../models/resourceCategory.model"); 
 
 exports.getCategories = async (req, res) => {
   try {

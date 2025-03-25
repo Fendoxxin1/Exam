@@ -9,7 +9,7 @@ const StudyProgram = require("./studyprogram.model");
 const Subject = require("./subject.model");
 const User = require("./user.model");
 const Resource = require("./resource.model");
-const ResourceCategory = require("./resourceCategory.model");
+const ResourceCategory = require("./resourceCategory.model"); 
 
 User.belongsToMany(EducationalCenter, { through: CourseRegistration });
 EducationalCenter.belongsToMany(User, { through: CourseRegistration });
