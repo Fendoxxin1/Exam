@@ -6,7 +6,6 @@ const commentRoutes = require("./routes/comments.routes");
 const categoryRoutes = require("./routes/resourceCategories.routes");
 const regionRoutes = require("./routes/regions.routes");
 const { connectDb, db } = require("./config/db");
-const swaggerDocs = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const app = express();
 app.use(express.json());
