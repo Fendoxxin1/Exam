@@ -8,23 +8,34 @@ const ProgramAssignment = require("./programassignment.model");
 const StudyProgram = require("./studyprogram.model");
 const Subject = require("./subject.model");
 const User = require("./user.model");
+const Resource = require("./Resource"); // Yangi model
+const ResourceCategory = require("./ResourceCategory"); // Yangi model
 
+// User va EducationalCenter o'rtasidagi M:N bog'liqlik
 User.belongsToMany(EducationalCenter, { through: CourseRegistration });
 EducationalCenter.belongsToMany(User, { through: CourseRegistration });
 
+// Profession va StudyProgram o'rtasidagi 1:M bog'liqlik
 Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
 Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 StudyProgram.belongsTo(Profession, { foreignKey: "professionId" });
 StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
 
+// EducationalCenter va Filial o'rtasidagi 1:M bog'liqlik
 EducationalCenter.hasMany(Filial, { foreignKey: "educationalCenterId" });
 Filial.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
 
+// EducationalCenter va Comment o'rtasidagi 1:M bog'liqlik
 EducationalCenter.hasMany(Comment, { foreignKey: "educationalCenterId" });
 Comment.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
 
+// EducationalCenter va Like o'rtasidagi 1:M bog'liqlik
 EducationalCenter.hasMany(Like, { foreignKey: "educationalCenterId" });
 Like.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
+
+// Resource va ResourceCategory o'rtasidagi 1:M bog'liqlik
+Resource.belongsTo(ResourceCategory, { foreignKey: "categoryid" });
+ResourceCategory.hasMany(Resource, { foreignKey: "categoryid" });
 
 module.exports = {
   User,
@@ -37,4 +48,6 @@ module.exports = {
   Filial,
   Comment,
   Like,
+  Resource, 
+  ResourceCategory, 
 };
