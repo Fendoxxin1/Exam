@@ -1,4 +1,5 @@
 const { db } = require("../config/db");
+const { DataTypes } = require("sequelize");
 
 const Filial = db.define("Filial", {
   id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
