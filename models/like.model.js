@@ -1,3 +1,5 @@
+const { DataTypes } = require("sequelize");
+
 const { db } = require("../config/db");
 
 const Like = db.define("Like", {
