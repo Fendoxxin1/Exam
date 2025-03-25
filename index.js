@@ -50,6 +50,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/regions", regionRoutes);
 
+
 connectDb();
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
