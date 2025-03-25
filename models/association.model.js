@@ -8,7 +8,7 @@ const ProgramAssignment = require("./programassignment.model");
 const StudyProgram = require("./studyprogram.model");
 const Subject = require("./subject.model");
 const User = require("./user.model");
-const Resource = require("./Resource"); // Yangi model
+const Resource = require("./resource.model"); // Yangi model
 const ResourceCategory = require("./ResourceCategory"); // Yangi model
 
 // User va EducationalCenter o'rtasidagi M:N bog'liqlik
