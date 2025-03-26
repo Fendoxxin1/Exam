@@ -1,12 +1,10 @@
 const { Sequelize } = require("sequelize");
 
-
 // const db = new Sequelize("n17", "root", "Odil5060", {
 //   host: "localhost",
 //   dialect: "mysql",
 //   logging: false,
 // });
-
 
 // const db = new Sequelize("az", "root", "1234", {
 //   host: "localhost",
@@ -17,6 +15,7 @@ const { Sequelize } = require("sequelize");
 const db = new Sequelize("exam3", "root", "billybutcher1", {
   host: "localhost",
   dialect: "mysql",
+  logging: false,
 });
 
 async function connectDb() {
