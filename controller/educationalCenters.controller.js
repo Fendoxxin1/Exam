@@ -50,7 +50,7 @@ exports.createEducationCenter = async (req, res) => {
       [name, region, phoneNumber || null, address || null]
     );
 
-    res.status(201).json({ message: "Ta’lim markazi yaratildi" });
+    res.status(201).json({ message: "Ta'lim markazi yaratildi" });
   } catch (err) {
     console.error(" Xatolik:", err.message);
     res.status(500).json({ error: "Serverda xatolik", details: err.message });
