@@ -24,7 +24,7 @@ const Resource = db.define("Resource", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    categoryid: {
+    categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false
     }
