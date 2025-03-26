@@ -214,6 +214,8 @@ router.post("/verify-otp", userController.verifyOtp);
  *                     role:
  *                       type: string
  *                       example: "user"
+ *                     age: 
+ *                       type: integer
  *       400:
  *         description: "Foydalanuvchi ro'yxatdan o'tkazilmadi"
  *         content:
@@ -226,6 +228,53 @@ router.post("/verify-otp", userController.verifyOtp);
  *                   example: "User already exists"
  */
 router.post("/register", userController.registerUser);
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Foydalanuvchi tizimga kirish
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 format: phone
+ *                 example: "+998901234567"
+ *               password:
+ *                 type: string
+ *                 example: "123456"
+ *     responses:
+ *       200:
+ *         description: Foydalanuvchi tizimga kirdi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User successfully logged in"
+ *                 token:
+ *                   type: string
+ *                   example: "your-access-token"
+ *       400:
+ *         description: "Parol yoki telefon raqami xato"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Password or phone number is incorrect"
+ */
+router.post("/login", userController.loginUser);
 
 /**
  * @swagger

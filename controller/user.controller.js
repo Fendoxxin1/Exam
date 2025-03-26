@@ -62,7 +62,19 @@ const verifyOtp = async (req, res) => {
     res.status(400).json({ message: "Noto'g'ri ma'lumot yuborildi" });
   }
 };
-
+const loginUser = async (req, res) => {
+  const { phone, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { phone } });
+    if (!user) return res.status(404).json({ error: "User topilmadi" });
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) return res.status(403).json({ error: "Parol xato" });
+    const token = jwt.sign({ id: user.id }, "sirlisoz");
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const registerUser = async (req, res) => {
   const { firstName, password, email, phone, lastName, image } = req.body;
   try {
@@ -207,10 +219,11 @@ module.exports = {
   sendOtpEmail,
   verifyOtp,
   registerUser,
+  loginUser,
   updateUser,
   deleteUser,
   getMe,
   refreshToken,
   getAllUser,
-  getAllCeo,  
+  getAllCeo,
 };
