@@ -6,6 +6,7 @@ const commentRoutes = require("./routes/comments.routes");
 const categoryRoutes = require("./routes/resourceCategories.routes");
 const regionRoutes = require("./routes/regions.routes");
 const userRoutes = require("./routes/user.routes");
+const ProfessionRoutes = require("./routes/profession.routes");
 const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
@@ -49,7 +50,7 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/regions", regionRoutes);
-
+app.use("/api", ProfessionRoutes);
 
 connectDb();
 
