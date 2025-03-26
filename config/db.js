@@ -14,7 +14,7 @@ const { Sequelize } = require("sequelize");
 //   logging:false
 // });
 
-const db = new Sequelize("fen", "root", "billybutcher1", {
+const db = new Sequelize("exam3", "root", "billybutcher1", {
   host: "localhost",
   dialect: "mysql",
 });

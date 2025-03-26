@@ -4,7 +4,7 @@ const { User } = require("../models/association.model");
 const sendSMS = require("../config/sendSMS");
 const { sendEmail } = require("../config/sendEMAIL");
 const jwt = require("jsonwebtoken");
-
+const { Op } = require("sequelize");
 totp.options = { step: 120 };
 authenticator.options = { step: 120 };
 
@@ -64,24 +64,24 @@ const verifyOtp = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  const { name, password, email, phone, ...rest } = req.body;
+  const { firstName, password, email, phone, lastName, image } = req.body;
   try {
     if (!isValidEmail(email))
       return res.status(403).json({ error: "Noto'g'ri email" });
     if (!isValidPhone(phone))
       return res.status(403).json({ error: "Noto'g'ri telefon raqam" });
 
-    const existingUser = await User.findOne({ where: { email, phone } });
-    if (existingUser)
-      return res.status(400).json({ error: "User already exists" });
+    const findUser = await User.findOne({ where: { email, phone } });
+    if (findUser) return res.status(400).json({ error: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const user = await User.create({
-      name,
+      firstName,
       password: hashedPassword,
       email,
       phone,
-      ...rest,
+      lastName,
+      image,
     });
 
     res.status(201).json({ message: "User successfully registered", user });
@@ -90,12 +90,67 @@ const registerUser = async (req, res) => {
   }
 };
 
+const getAllUser = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      sort = "createdAt",
+      order = "DESC",
+      firstName,
+      role,
+    } = req.query;
+    const whereCondition = {};
+
+    if (role) whereCondition.role = role;
+    if (firstName) whereCondition.firstName = { [Op.like]: `%${firstName}%` };
+
+    const users = await User.findAll({
+      where: whereCondition,
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      order: [[sort, order]],
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const getAllCeo = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      sort = "createdAt",
+      order = "DESC",
+      firstName,
+    } = req.query;
+    const whereCondition = {};
+    whereCondition.role = "ceo";
+    if (firstName) whereCondition.firstName = { [Op.like]: `%${firstName}%` };
+
+    const users = await User.findAll({
+      where: whereCondition,
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      order: [[sort, order]],
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const updateUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ error: "User topilmadi" });
-
-    await user.update(req.body);
+    const { ...rest } = user.dataValues;
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    await user.update({
+      ...rest,
+      password: hashedPassword,
+      ...req.body,
+    });
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -156,4 +211,6 @@ module.exports = {
   deleteUser,
   getMe,
   refreshToken,
+  getAllUser,
+  getAllCeo,  
 };

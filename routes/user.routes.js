@@ -16,7 +16,7 @@ const userController = require("../controller/user.controller");
  * /send-otp-sms:
  *   post:
  *     summary: Telefon raqamga OTP jo'natish
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -57,7 +57,7 @@ router.post("/send-otp-sms", userController.sendOtpSMS);
  * /send-otp-email:
  *   post:
  *     summary: Emailga OTP jo'natish
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -98,7 +98,7 @@ router.post("/send-otp-email", userController.sendOtpEmail);
  * /verify-otp:
  *   post:
  *     summary: OTPni tekshirish
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -146,7 +146,7 @@ router.post("/verify-otp", userController.verifyOtp);
  * /register:
  *   post:
  *     summary: Yangi foydalanuvchi ro'yxatdan o'tkazish
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -167,10 +167,16 @@ router.post("/verify-otp", userController.verifyOtp);
  *               password:
  *                 type: string
  *                 example: "123456"
- *               phoneNumber:
+ *               image:
+ *                 type: string
+ *                 example: "example.jpg"
+ *               phone:
  *                 type: string
  *                 format: phone
  *                 example: "+998901234567"
+ *               role:
+ *                 type: string
+ *                 example: "user"
  *     responses:
  *       201:
  *         description: Yangi foydalanuvchi yaratildi
@@ -194,14 +200,20 @@ router.post("/verify-otp", userController.verifyOtp);
  *                     lastName:
  *                       type: string
  *                       example: "Xolmatov"
+ *                     image:
+ *                       type: string
+ *                       example: "example.jpg"
  *                     email:
  *                       type: string
  *                       format: email
  *                       example: "example@gmail.com"
- *                     phoneNumber:
+ *                     phone:
  *                       type: string
  *                       format: phone
  *                       example: "+998901234567"
+ *                     role:
+ *                       type: string
+ *                       example: "user"
  *       400:
  *         description: "Foydalanuvchi ro'yxatdan o'tkazilmadi"
  *         content:
@@ -217,8 +229,98 @@ router.post("/register", userController.registerUser);
 
 /**
  * @swagger
- * /api/user/updateUser/{id}:
- *   put:
+ * /allUser:
+ *   get:
+ *     summary: Barcha foydalanuvchilarni olish
+ *     tags: [Users]
+ *     description: Foydalanuvchilarni roli, ismi, pagination va sort bo‘yicha filterlash
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: "Nechanchi sahifa (pagination uchun)"
+ *
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: "Bir sahifada nechta element bo‘lishi (pagination uchun)"
+ *
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           default: "createdAt"
+ *         description: "Qaysi ustun bo‘yicha saralash"
+ *
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: ["ASC", "DESC"]
+ *           default: "DESC"
+ *         description: "Saralash tartibi (o‘sish yoki kamayish)"
+ *
+ *       - in: query
+ *         name: firstName
+ *         schema:
+ *           type: string
+ *         description: "Foydalanuvchi ismi bo‘yicha qidirish (LIKE operatori bilan)"
+ *
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *         description: "Foydalanuvchi rolini filterlash"
+ *
+ *     responses:
+ *       200:
+ *         description: Foydalanuvchilar ro‘yxati
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   firstName:
+ *                     type: string
+ *                     example: "Ali"
+ *                   lastName:
+ *                     type: string
+ *                     example: "Valiyev"
+ *                   role:
+ *                     type: string
+ *                     example: "Admin"
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-03-26T12:00:00Z"
+ *
+ *       500:
+ *         description: Server xatosi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Something went wrong"
+ */
+router.get("/allUser", userController.getAllUser);
+
+router.get("/allCeo", userController.getAllCeo);
+/**
+ * @swagger
+ * /updateUser/{id}:
+ *   patch:
  *     summary: Foydalanuvchini yangilash
  *     tags: [Users]
  *     parameters:
@@ -236,21 +338,19 @@ router.post("/register", userController.registerUser);
  *             properties:
  *               firstName:
  *                 type: string
- *                 example: "Firdavs"
  *               lastName:
  *                 type: string
- *                 example: "Xolmatov"
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "example@gmail.com"
- *               phoneNumber:
+ *               phone:
  *                 type: string
  *                 format: phone
- *                 example: "+998901234567"
+ *               image:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Yangilangan foydalanuvchi ma'lumotlari
+ *         description: Foydalanuvchi yangilandi
  *         content:
  *           application/json:
  *             schema:
@@ -271,30 +371,23 @@ router.post("/register", userController.registerUser);
  *                     lastName:
  *                       type: string
  *                       example: "Xolmatov"
+ *                     image:
+ *                       type: string
+ *                       example: "example.jpg"
  *                     email:
  *                       type: string
  *                       format: email
  *                       example: "example@gmail.com"
- *                     phoneNumber:
+ *                     phone:
  *                       type: string
  *                       format: phone
  *                       example: "+998901234567"
- *       400:
- *         description: "Foydalanuvchi yangilanmadi"
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "User not found"
  */
-router.put("/updateUser/:id", userController.updateUser);
+router.patch("/updateUser/:id", userController.updateUser);
 
 /**
  * @swagger
- * /api/user/deleteUser/{id}:
+ * /deleteUser/{id}:
  *   delete:
  *     summary: Foydalanuvchini o'chirish
  *     tags: [Users]
@@ -330,7 +423,7 @@ router.delete("/deleteUser/:id", userController.deleteUser);
 
 /**
  * @swagger
- * /api/user/me:
+ * /me:
  *   get:
  *     summary: Joriy foydalanuvchi ma'lumotlarini olish
  *     tags: [Users]
@@ -377,7 +470,7 @@ router.get("/me", authenticate, userController.getMe);
  * /refreshToken:
  *   post:
  *     summary: Access tokenni yangilash
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:

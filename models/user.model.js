@@ -13,7 +13,7 @@ const User = db.define("User", {
       notEmpty: true,
     },
   },
-  img: {
+  image: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -36,7 +36,7 @@ const User = db.define("User", {
       isEmail: true,
     },
   },
-  phoneNumber: {
+  phone: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
@@ -44,8 +44,7 @@ const User = db.define("User", {
       notEmpty: true,
     },
   },
-
-  type: {
+  role: {
     type: DataTypes.ENUM("admin", "super-admin", "ceo", "user"),
   },
 });
