@@ -6,54 +6,77 @@ exports.getResources = async (req, res) => {
     page = parseInt(page);
     limit = parseInt(limit);
 
+    if (isNaN(page) || page < 1) {
+      return res.status(400).json({ error: "Invalid page number" });
+    }
+    if (isNaN(limit) || limit < 1) {
+      return res.status(400).json({ error: "Invalid limit value" });
+    }
+
     const { count, rows } = await Resource.findAndCountAll({
       limit,
       offset: (page - 1) * limit,
     });
 
-    res.json({
-      total: count,
-      page,
-      limit,
-      data: rows,
-    });
+    res.json({ total: count, page, limit, data: rows });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error fetching resources:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 exports.createResource = async (req, res) => {
   try {
+    if (!req.body.name || typeof req.body.name !== "string") {
+      return res.status(400).json({ error: "Valid resource name is required" });
+    }
+
     const resource = await Resource.create(req.body);
     res.status(201).json(resource);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error creating resource:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 exports.updateResource = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid resource ID" });
+    }
+
     const [updated] = await Resource.update(req.body, { where: { id }, individualHooks: true });
 
-    if (!updated) return res.status(404).json({ message: "Resource not found" });
+    if (!updated) {
+      return res.status(404).json({ error: "Resource not found" });
+    }
 
     const updatedResource = await Resource.findByPk(id);
     res.json({ message: "Resource updated", data: updatedResource });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error updating resource:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 exports.deleteResource = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid resource ID" });
+    }
+
     const deleted = await Resource.destroy({ where: { id } });
 
-    if (!deleted) return res.status(404).json({ message: "Resource not found" });
+    if (!deleted) {
+      return res.status(404).json({ error: "Resource not found" });
+    }
 
-    res.json({ message: "Resource deleted" });
+    res.json({ message: "Resource deleted successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error deleting resource:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
