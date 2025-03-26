@@ -26,12 +26,11 @@ const Resource = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    categoryid: {
+    categoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-  },
-  {
+}, {
     tableName: "resources",
     timestamps: false,
   }

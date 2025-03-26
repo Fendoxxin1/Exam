@@ -5,6 +5,8 @@ const likeRoutes = require("./routes/likes.routes");
 const commentRoutes = require("./routes/comments.routes");
 const categoryRoutes = require("./routes/resourceCategories.routes");
 const regionRoutes = require("./routes/regions.routes");
+const filialRoutes = require("./routes/filial.routes");
+const educationalCentersRoutes = require("./routes/educationalCenters.routes");
 const userRoutes = require("./routes/user.routes");
 const ProfessionRoutes = require("./routes/profession.routes");
 const { connectDb, db } = require("./config/db");
@@ -50,7 +52,10 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/regions", regionRoutes);
+app.use("/api/educational-centers", educationalCentersRoutes);
 app.use("/api", ProfessionRoutes);
+app.use("/api/filials", filialRoutes);
+
 
 connectDb();
 

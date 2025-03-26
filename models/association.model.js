@@ -1,7 +1,7 @@
 const Comment = require("./comment.model");
 const CourseRegistration = require("./courseregistration.model");
 const EducationalCenter = require("./educationalcenter.model");
-const Branch = require("./fillial.model");
+const Filial = require("./filial.model");
 const Like = require("./like.model");
 const Profession = require("./profession.model");
 const ProgramAssignment = require("./programassignment.model");
@@ -16,6 +16,7 @@ const LcMajors = require("./lcmajors.model")
 
 User.belongsToMany(EducationalCenter, { through: CourseRegistration });
 EducationalCenter.belongsToMany(User, { through: CourseRegistration });
+
 
 Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
 StudyProgram.belongsTo(Profession, { foreignKey: "professionId" });
@@ -43,7 +44,7 @@ module.exports = {
   ProgramAssignment,
   EducationalCenter,
   CourseRegistration,
-  Branch,
+  Filial,
   Comment,
   Like,
   Resource, 

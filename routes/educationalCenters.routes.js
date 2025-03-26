@@ -1,28 +1,28 @@
 const express = require("express");
-const { body, query } = require("express-validator");
+const { body, query, param } = require("express-validator");
 const {
-  getBranches,
-  getBranchById,
-  createBranch,
-  updateBranch,
-  deleteBranch,
-} = require("../controller/filial.controller");
+  getEducationCenters,
+  getEducationCenterById,
+  createEducationCenter,
+  updateEducationCenter,
+  deleteEducationCenter
+} = require("../controller/educationalCenters.controller");
 
 const router = express.Router();
 
 /**
  * @swagger
  * tags:
- *   name: Filials
- *   description: Filial CRUD API
+ *   name: Educational Centers
+ *   description: Ta’lim markazlarini boshqarish
  */
 
 /**
  * @swagger
- * /filials:
+ * /educational-centers:
  *   get:
- *     summary: Barcha filiallarni olish
- *     tags: [Filials]
+ *     summary: Barcha ta’lim markazlarini olish
+ *     tags: [Educational Centers]
  *     parameters:
  *       - in: query
  *         name: sort
@@ -39,78 +39,73 @@ const router = express.Router();
  *         name: region
  *         schema:
  *           type: integer
- *         description: Region ID
- *       - in: query
- *         name: learningcenterid
- *         schema:
- *           type: integer
- *         description: Ta'lim markazi ID
+ *         description: Hudud ID
  *       - in: query
  *         name: page
  *         schema:
  *           type: integer
- *           minimum: 1
  *         description: Sahifa raqami
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
- *           minimum: 1
  *         description: Sahifadagi elementlar soni
  *     responses:
  *       200:
- *         description: Filiallar ro‘yxati
+ *         description: Barcha ta’lim markazlari
  */
 router.get(
-  "/filials",
+  "/educational-centers",
   [
     query("sort").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("region").optional().isInt(),
-    query("learningcenterid").optional().isInt(),
     query("page").optional().isInt({ min: 1 }),
     query("limit").optional().isInt({ min: 1 }),
   ],
-  getBranches
+  getEducationCenters
 );
 
 /**
  * @swagger
- * /filials/{id}:
+ * /educational-centers/{id}:
  *   get:
- *     summary: Bitta filialni olish
- *     tags: [Filials]
+ *     summary: Bitta ta’lim markazining ma’lumotlarini olish
+ *     tags: [Educational Centers]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: Filial ID
+ *         description: Markaz ID raqami
  *     responses:
  *       200:
- *         description: Bitta filial
+ *         description: Markaz topildi
+ *       404:
+ *         description: Markaz topilmadi
  */
-router.get("/filials/:id", getBranchById);
+router.get("/educational-centers/:id", param("id").isInt(), getEducationCenterById);
 
 /**
  * @swagger
- * /filials:
+ * /educational-centers:
  *   post:
- *     summary: Yangi filial yaratish
- *     tags: [Filials]
+ *     summary: Yangi ta’lim markazi qo‘shish
+ *     tags: [Educational Centers]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - region
  *             properties:
  *               name:
  *                 type: string
  *               region:
- *                 type: integer
- *               learningcenterid:
  *                 type: integer
  *               phoneNumber:
  *                 type: string
@@ -118,33 +113,34 @@ router.get("/filials/:id", getBranchById);
  *                 type: string
  *     responses:
  *       201:
- *         description: Filial yaratildi
+ *         description: Markaz yaratildi
+ *       400:
+ *         description: Xatolik
  */
 router.post(
-  "/filials",
+  "/educational-centers",
   [
     body("name").notEmpty().isString(),
     body("region").isInt(),
-    body("learningcenterid").isInt(),
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],
-  createBranch
+  createEducationCenter
 );
 
 /**
  * @swagger
- * /filials/{id}:
+ * /educational-centers/{id}:
  *   patch:
- *     summary: Filialni yangilash
- *     tags: [Filials]
+ *     summary: Markaz ma'lumotlarini qisman yangilash
+ *     tags: [Educational Centers]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: Filial ID
+ *         description: Markaz ID raqami
  *     requestBody:
  *       required: true
  *       content:
@@ -156,45 +152,47 @@ router.post(
  *                 type: string
  *               region:
  *                 type: integer
- *               learningcenterid:
- *                 type: integer
  *               phoneNumber:
  *                 type: string
  *               address:
  *                 type: string
  *     responses:
  *       200:
- *         description: Filial yangilandi
+ *         description: Markaz qisman yangilandi
+ *       400:
+ *         description: Xatolik
  */
 router.patch(
-  "/filials/:id",
+  "/educational-centers/:id",
   [
+    param("id").isInt(),
     body("name").optional().isString(),
     body("region").optional().isInt(),
-    body("learningcenterid").optional().isInt(),
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],
-  updateBranch
+  updateEducationCenter
 );
 
 /**
  * @swagger
- * /filials/{id}:
+ * /educational-centers/{id}:
  *   delete:
- *     summary: Filialni o‘chirish
- *     tags: [Filials]
+ *     summary: Markazni o‘chirish
+ *     tags: [Educational Centers]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: Filial ID
+ *         description: Markaz ID raqami
  *     responses:
  *       200:
- *         description: Filial o‘chirildi
+ *         description: Markaz o‘chirildi
+ *       404:
+ *         description: Markaz topilmadi
  */
-router.delete("/filials/:id", deleteBranch);
+router.delete("/educational-centers/:id", param("id").isInt(), deleteEducationCenter);
 
 module.exports = router;
