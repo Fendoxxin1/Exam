@@ -1,22 +1,26 @@
 const { DataTypes } = require("sequelize");
-const {db} = require("../config/db");
+const { db } = require("../config/db");
 
-const ResourceCategory = db.define("ResourceCategory", {
+const ResourceCategory = db.define(
+  "ResourceCategory",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     img: {
-        type: DataTypes.STRING
-    }
-}, {
+      type: DataTypes.STRING,
+    },
+  },
+  {
     tableName: "resourcecategory",
-    timestamps: false
-});
+    timestamps: false,
+  }
+);
 
 module.exports = ResourceCategory;

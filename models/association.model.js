@@ -18,8 +18,9 @@ User.belongsToMany(EducationalCenter, { through: CourseRegistration });
 EducationalCenter.belongsToMany(User, { through: CourseRegistration });
 
 Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
-Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 StudyProgram.belongsTo(Profession, { foreignKey: "professionId" });
+
+Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
 
 // EducationalCenter.hasMany(Filial, { foreignKey: "educationalCenterId" });
