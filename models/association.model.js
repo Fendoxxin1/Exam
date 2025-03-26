@@ -9,7 +9,10 @@ const StudyProgram = require("./studyprogram.model");
 const Subject = require("./subject.model");
 const User = require("./user.model");
 const Resource = require("./resource.model");
-const ResourceCategory = require("./resourceCategory.model");
+const ResourceCategory = require("./resourceCategory.model"); 
+const UserEnrolment = require("./userenrolment.model")
+const LcMajors = require("./lcmajors.model")
+
 
 User.belongsToMany(EducationalCenter, { through: CourseRegistration });
 EducationalCenter.belongsToMany(User, { through: CourseRegistration });
@@ -20,8 +23,8 @@ StudyProgram.belongsTo(Profession, { foreignKey: "professionId" });
 Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
 
-EducationalCenter.hasMany(Branch, { foreignKey: "educationalCenterId" });
-Branch.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
+// EducationalCenter.hasMany(Filial, { foreignKey: "educationalCenterId" });
+// Filial.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
 
 EducationalCenter.hasMany(Comment, { foreignKey: "educationalCenterId" });
 Comment.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
@@ -29,8 +32,8 @@ Comment.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
 EducationalCenter.hasMany(Like, { foreignKey: "educationalCenterId" });
 Like.belongsTo(EducationalCenter, { foreignKey: "educationalCenterId" });
 
-Resource.belongsTo(ResourceCategory, { foreignKey: "categoryid" });
-ResourceCategory.hasMany(Resource, { foreignKey: "categoryid" });
+Resource.belongsTo(ResourceCategory, { foreignKey: "categoryId" });
+ResourceCategory.hasMany(Resource, { foreignKey: "categoryId" });
 
 module.exports = {
   User,
@@ -43,6 +46,8 @@ module.exports = {
   Branch,
   Comment,
   Like,
-  Resource,
-  ResourceCategory,
+  Resource, 
+  ResourceCategory, 
+  UserEnrolment,
+  LcMajors
 };
