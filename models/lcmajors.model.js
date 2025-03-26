@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
-const { db } = require("../config/db");
+  const {db} = require("../config/db");
 
-const ResourceCategory = db.define(
-  "ResourceCategory",
+const IcMajors = db.define(
+  "IcMajors",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -13,14 +13,15 @@ const ResourceCategory = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    img: {
-      type: DataTypes.STRING,
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
   },
   {
-    tableName: "resourcecategory",
+    tableName: "icmajors",
     timestamps: false,
   }
 );
 
-module.exports = ResourceCategory;
+module.exports = IcMajors;

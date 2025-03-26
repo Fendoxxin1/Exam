@@ -123,7 +123,7 @@ router.post("/", resourceValidation, createResource);
 /**
  * @swagger
  * /resources/{id}:
- *   put:
+ *   patch:
  *     summary: Update a resource by ID
  *     tags: [Resources]
  *     parameters:
@@ -155,7 +155,7 @@ router.post("/", resourceValidation, createResource);
  *       200:
  *         description: Resource updated successfully
  */
-router.put("/:id", idValidation.concat(resourceValidation), updateResource);
+router.patch("/:id", idValidation.concat(resourceValidation), updateResource);
 
 /**
  * @swagger

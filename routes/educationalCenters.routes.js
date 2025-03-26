@@ -1,6 +1,12 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const educationCenterController = require("../controller/educationalCenters.controller");
+const {
+  getEducationCenters,
+  getEducationCenterById,
+  createEducationCenter,
+  updateEducationCenter,
+  deleteEducationCenter
+} = require("../controller/educationalCenters.controller");
 
 const router = express.Router();
 
@@ -57,7 +63,7 @@ router.get(
     query("page").optional().isInt({ min: 1 }),
     query("limit").optional().isInt({ min: 1 }),
   ],
-  educationCenterController.getEducationCenters
+  getEducationCenters
 );
 
 /**
@@ -79,7 +85,7 @@ router.get(
  *       404:
  *         description: Markaz topilmadi
  */
-router.get("/educational-centers/:id", param("id").isInt(), educationCenterController.getEducationCenterById);
+router.get("/educational-centers/:id", param("id").isInt(), getEducationCenterById);
 
 /**
  * @swagger
@@ -119,7 +125,7 @@ router.post(
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],
-  educationCenterController.createEducationCenter
+  createEducationCenter
 );
 
 /**
@@ -165,7 +171,7 @@ router.patch(
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],
-  educationCenterController.updateEducationCenter
+  updateEducationCenter
 );
 
 /**
@@ -187,6 +193,6 @@ router.patch(
  *       404:
  *         description: Markaz topilmadi
  */
-router.delete("/educational-centers/:id", param("id").isInt(), educationCenterController.deleteEducationCenter);
+router.delete("/educational-centers/:id", param("id").isInt(), deleteEducationCenter);
 
 module.exports = router;

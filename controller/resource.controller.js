@@ -34,11 +34,12 @@ exports.createResource = async (req, res) => {
 exports.updateResource = async (req, res) => {
   try {
     const { id } = req.params;
-    const [updated] = await Resource.update(req.body, { where: { id } });
+    const [updated] = await Resource.update(req.body, { where: { id }, individualHooks: true });
 
     if (!updated) return res.status(404).json({ message: "Resource not found" });
 
-    res.json({ message: "Resource updated" });
+    const updatedResource = await Resource.findByPk(id);
+    res.json({ message: "Resource updated", data: updatedResource });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,0 +1,83 @@
+const { Profession } = require("../models/association.model");
+
+const getProfessions = async (req, res) => {
+  try {
+    const professions = await Profession.findAll();
+    res.json(professions);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const createProfession = async (req, res) => {
+  try {
+    const profession = await Profession.create(req.body);
+    res.json(profession);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const getProfessionById = async (req, res) => {
+  try {
+    const profession = await Profession.findByPk(req.params.id);
+    if (!profession) {
+      return res.status(404).json({
+        error: "Profession not found",
+      });
+    }
+    res.json(profession);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const updateProfession = async (req, res) => {
+  try {
+    const profession = await Profession.findByPk(req.params.id);
+    if (!profession) {
+      return res.status(404).json({
+        error: "Profession not found",
+      });
+    }
+    await profession.update(req.body);
+    res.json(profession);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const deleteProfession = async (req, res) => {
+  try {
+    const profession = await Profession.findByPk(req.params.id);
+    if (!profession) {
+      return res.status(404).json({
+        error: "Profession not found",
+      });
+    }
+    await profession.destroy();
+    res.json({
+      message: "Profession deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  getProfessions,
+  createProfession,
+  getProfessionById,
+  updateProfession,
+  deleteProfession,
+};

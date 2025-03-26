@@ -7,4 +7,4 @@ const Profession = db.define("Profession", {
   img: { type: DataTypes.STRING },
 });
 
-module.exports = Profession
+module.exports = Profession;
