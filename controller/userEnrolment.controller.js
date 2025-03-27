@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const db = require("../models/association.model"); 
-const UserEnrolment = db.userEnrolment;
+const UserEnrolment = db.UserEnrollment;
 
 
 exports.createUserEnrolment = async (req, res) => {
@@ -10,8 +10,8 @@ exports.createUserEnrolment = async (req, res) => {
     }
 
     try {
-        const { userId, learningId, filialId } = req.body;
-        const newEnrolment = await UserEnrolment.create({ userId, learningId, filialId });
+        const { userId, educationalId, filialId } = req.body;
+        const newEnrolment = await UserEnrolment.create({ userId, educationalId, filialId });
         res.status(201).json(newEnrolment);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });

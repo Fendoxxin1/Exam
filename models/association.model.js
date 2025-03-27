@@ -1,6 +1,6 @@
 const User = require("./user.model");
 const Filial = require("./filial.model");
-const LearningCenter = require("./educationalcenter.model");
+const educationalcenter = require("./educationalcenter.model");
 const UserEnrollment = require("./userenrolment.model");
 const StudyProgram = require("./studyprogram.model");
 const LC_Major = require("./lcmajors.model");
@@ -15,32 +15,32 @@ const Comment = require("./comment.model");
 User.belongsTo(Region, { foreignKey: "region" });
 Region.hasMany(User, { foreignKey: "region" });
 
-User.belongsToMany(LearningCenter, {
+User.belongsToMany(educationalcenter, {
   through: UserEnrollment,
   foreignKey: "userId",
 });
-LearningCenter.belongsToMany(User, {
+educationalcenter.belongsToMany(User, {
   through: UserEnrollment,
   foreignKey: "educationalId",
 });
 
-User.belongsToMany(LearningCenter, { through: Like, foreignKey: "userId" });
-LearningCenter.belongsToMany(User, {
+User.belongsToMany(educationalcenter, { through: Like, foreignKey: "userId" });
+educationalcenter.belongsToMany(User, {
   through: Like,
   foreignKey: "educationalId",
 });
 
-Filial.belongsTo(LearningCenter, { foreignKey: "educationalId" });
-LearningCenter.hasMany(Filial, { foreignKey: "educationalId" });
+Filial.belongsTo(educationalcenter, { foreignKey: "educationalId" });
+educationalcenter.hasMany(Filial, { foreignKey: "educationalId" });
 
 Filial.belongsTo(Region, { foreignKey: "region" });
 Region.hasMany(Filial, { foreignKey: "region" });
 
-LearningCenter.belongsToMany(StudyProgram, {
+educationalcenter.belongsToMany(StudyProgram, {
   through: LC_Major,
   foreignKey: "educationalId",
 });
-StudyProgram.belongsToMany(LearningCenter, {
+StudyProgram.belongsToMany(educationalcenter, {
   through: LC_Major,
   foreignKey: "majorid",
 });
@@ -51,8 +51,8 @@ Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
 User.hasMany(Comment, { foreignKey: "userId" });
 Comment.belongsTo(User, { foreignKey: "userId" });
 
-LearningCenter.hasMany(Comment, { foreignKey: "educationalId" });
-Comment.belongsTo(LearningCenter, { foreignKey: "educationalId" });
+educationalcenter.hasMany(Comment, { foreignKey: "educationalId" });
+Comment.belongsTo(educationalcenter, { foreignKey: "educationalId" });
 
 Resources.belongsTo(ResourceCategory, { foreignKey: "categoryId" });
 ResourceCategory.hasMany(Resources, { foreignKey: "categoryId" });
@@ -66,7 +66,7 @@ Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 module.exports = {
   User,
   Filial,
-  LearningCenter,
+  educationalcenter,
   UserEnrollment,
   StudyProgram,
   LC_Major,

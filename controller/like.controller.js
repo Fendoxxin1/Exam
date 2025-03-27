@@ -35,10 +35,10 @@ exports.createLike = async (req, res) => {
     if (!req.body.userId || isNaN(req.body.userId)) {
       return res.status(400).json({ error: "Valid userId is required" });
     }
-    if (!req.body.educationalCenterId || isNaN(req.body.educationalCenterId)) {
+    if (!req.body.educationalcenterId || isNaN(req.body.educationalcenterId)) {
       return res
         .status(400)
-        .json({ error: "Valid educationalCenterId is required" });
+        .json({ error: "Valid educationalcenterId is required" });
     }
 
     const like = await Like.create(req.body);
