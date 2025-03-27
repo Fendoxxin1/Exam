@@ -1,6 +1,6 @@
 const User = require("./user.model");
-const Branch = require("./filial.model");
-const LearningCenter = require("./educationalcenter.model");
+const Filial = require("./filial.model");
+const LearningCenter = require("./learningcenter.model");
 const UserEnrollment = require("./userenrolment.model");
 const StudyProgram = require("./studyprogram.model");
 const LC_Major = require("./lcmajors.model");
@@ -27,11 +27,11 @@ LearningCenter.belongsToMany(User, {
 User.belongsToMany(LearningCenter, { through: Like, foreignKey: "userID" });
 LearningCenter.belongsToMany(User, { through: Like, foreignKey: "learningid" });
 
-Branch.belongsTo(LearningCenter, { foreignKey: "learningid" });
-LearningCenter.hasMany(Branch, { foreignKey: "learningid" });
+Filial.belongsTo(LearningCenter, { foreignKey: "learningid" });
+LearningCenter.hasMany(Filial, { foreignKey: "learningid" });
 
-Branch.belongsTo(Region, { foreignKey: "region" });
-Region.hasMany(Branch, { foreignKey: "region" });
+Filial.belongsTo(Region, { foreignKey: "region" });
+Region.hasMany(Filial, { foreignKey: "region" });
 
 LearningCenter.belongsToMany(StudyProgram, {
   through: LC_Major,
@@ -62,7 +62,7 @@ Subjects.hasMany(StudyProgram, { foreignKey: "subjectid" });
 
 module.exports = {
   User,
-  Branch,
+  Filial,
   LearningCenter,
   UserEnrollment,
   StudyProgram,
