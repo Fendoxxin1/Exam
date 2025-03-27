@@ -30,33 +30,62 @@ exports.getComments = async (req, res) => {
   }
 };
 
-exports.createComment = async (req, res) => {
+exports.getCommentById = async (req, res) => {
   try {
-    if (!req.body.text || typeof req.body.text !== "string") {
-      console.log(error);
-      
-      return res.status(400).json({ error: "Comment text is required" });
-    }
-    if (!req.body.userId || isNaN(req.body.userId)) {
-      return res.status(400).json({ error: "Valid userId is required" });
-    }
-    if (!req.body.educationalCenterId || isNaN(req.body.educationalCenterId)) {
-      return res
-        .status(400)
-        .json({ error: "Valid educationalCenterId is required" });
+    const id = parseInt(req.params.id);
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid comment ID" });
     }
 
-    const comment = await Comment.create(req.body);
-    res.status(201).json(comment);
+    const comment = await Comment.findByPk(id);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    res.json(comment);
+  } catch (err) {
+    console.error("Error fetching comment:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.createComment = async (req, res) => {
+  try {
+
+    const { comment, star, userId, educationalcenterId } = req.body;
+
+    if (!comment || typeof comment !== "string") {
+      return res.status(400).json({ error: "Comment text is required" });
+    }
+    if (!userId || isNaN(userId)) {
+      return res.status(400).json({ error: "Valid userId is required" });
+    }
+    if (!educationalcenterId || isNaN(educationalcenterId)) {
+      return res
+        .status(400)
+        .json({ error: "Valid educationalcenterId is required" });
+    }
+
+    const newComment = await Comment.create({
+      comment,
+      star: star || 0, 
+      userId,
+      educationalcenterId,
+    });
+
+    res.status(201).json(newComment);
   } catch (err) {
     console.error("Error creating comment:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
+
 exports.deleteComment = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
 
     if (!id || isNaN(id)) {
       return res.status(400).json({ error: "Invalid comment ID" });

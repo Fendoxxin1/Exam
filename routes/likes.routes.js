@@ -11,10 +11,10 @@ const router = express.Router();
  *   description: API endpoints for managing likes
  */
 
-
+// **VALIDATION RULES**
 const likeValidation = [
   body("userId").isInt().withMessage("userId must be an integer"),
-  body("educationalId").isInt().withMessage("educationalId must be an integer"),
+  body("educationalCenterId").isInt().withMessage("educationalCenterId must be an integer"), // ❗ educationalId emas
 ];
 
 const idValidation = [
@@ -42,7 +42,7 @@ const idValidation = [
  *         name: sortBy
  *         schema:
  *           type: string
- *         description: Field to sort by (e.g., "userId", "educationalId")
+ *         description: Field to sort by (e.g., "userId", "educationalCenterId")
  *       - in: query
  *         name: order
  *         schema:
@@ -55,10 +55,10 @@ const idValidation = [
  *           type: integer
  *         description: Filter by userId
  *       - in: query
- *         name: educationalId
+ *         name: educationalCenterId
  *         schema:
  *           type: integer
- *         description: Filter by educationalId
+ *         description: Filter by educationalCenterId
  *     responses:
  *       200:
  *         description: A list of filtered and sorted likes
@@ -71,7 +71,7 @@ router.get(
     query("sortBy").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("userId").optional().isInt(),
-    query("educationalId").optional().isInt(),
+    query("educationalCenterId").optional().isInt(), // ❗ educationalId emas
   ],
   getLikes
 );
@@ -91,7 +91,7 @@ router.get(
  *             properties:
  *               userId:
  *                 type: integer
- *               educationalId:
+ *               educationalCenterId:
  *                 type: integer
  *     responses:
  *       201:

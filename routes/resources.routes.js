@@ -112,7 +112,7 @@ router.get(
  *                 nullable: true
  *               createdBy:
  *                 type: integer
- *               categoryid:
+ *               categoryId:
  *                 type: integer
  *     responses:
  *       201:
@@ -149,7 +149,7 @@ router.post("/", resourceValidation, createResource);
  *                 nullable: true
  *               createdBy:
  *                 type: integer
- *               categoryid:
+ *               categoryId:
  *                 type: integer
  *     responses:
  *       200:

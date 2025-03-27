@@ -27,11 +27,14 @@ exports.getResources = async (req, res) => {
 
 exports.createResource = async (req, res) => {
   try {
-    if (!req.body.name || typeof req.body.name !== "string") {
+
+    const { name, media, description, createdBy, categoryId } = req.body;
+
+    if (!name || typeof name !== "string") {
       return res.status(400).json({ error: "Valid resource name is required" });
     }
 
-    const resource = await Resource.create(req.body);
+    const resource = await Resource.create({ name, media, description,  createdBy, categoryId });
     res.status(201).json(resource);
   } catch (err) {
     console.error("Error creating resource:", err);

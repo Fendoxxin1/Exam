@@ -25,6 +25,27 @@ exports.getCategories = async (req, res) => {
   }
 };
 
+exports.getCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid category ID" });
+    }
+
+    const category = await ResourceCategory.findByPk(id);
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.json(category);
+  } catch (err) {
+    console.error("Error fetching category:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 exports.createCategory = async (req, res) => {
   try {
     if (!req.body.name || typeof req.body.name !== "string") {

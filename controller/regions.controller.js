@@ -1,4 +1,4 @@
-const {Region} = require("../models/association.model");
+const { Region } = require("../models/association.model");
 
 exports.getRegions = async (req, res) => {
   try {
@@ -21,6 +21,27 @@ exports.getRegions = async (req, res) => {
     res.json({ total: count, page, limit, data: rows });
   } catch (err) {
     console.error("Error fetching regions:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.getRegionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid region ID" });
+    }
+
+    const region = await Region.findByPk(id);
+
+    if (!region) {
+      return res.status(404).json({ error: "Region not found" });
+    }
+
+    res.json(region);
+  } catch (err) {
+    console.error("Error fetching region:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };

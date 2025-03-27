@@ -1,6 +1,6 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const { getRegions, createRegion, updateRegion, deleteRegion } = require("../controller/regions.controller");
+const { getRegions, getRegionById, createRegion, updateRegion, deleteRegion } = require("../controller/regions.controller");
 
 const router = express.Router();
 
@@ -68,6 +68,25 @@ router.get(
   ],
   getRegions
 );
+
+/**
+ * @swagger
+ * /regions/{id}:
+ *   get:
+ *     summary: Get a region by ID
+ *     tags: [Regions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Region ID
+ *     responses:
+ *       200:
+ *         description: Region data
+ */
+router.get("/:id", idValidation, getRegionById);
 
 /**
  * @swagger
