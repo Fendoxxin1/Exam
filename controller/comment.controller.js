@@ -33,6 +33,8 @@ exports.getComments = async (req, res) => {
 exports.createComment = async (req, res) => {
   try {
     if (!req.body.text || typeof req.body.text !== "string") {
+      console.log(error);
+      
       return res.status(400).json({ error: "Comment text is required" });
     }
     if (!req.body.userId || isNaN(req.body.userId)) {

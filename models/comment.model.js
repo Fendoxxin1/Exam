@@ -18,7 +18,7 @@ const Comment = db.define("Comment", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  educationalCenterId: {
+  educationalcenterId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },

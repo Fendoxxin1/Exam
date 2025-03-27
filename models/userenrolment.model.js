@@ -6,11 +6,11 @@ const UserEnrollment = db.define("UserEnrollment", {
     autoIncrement: true,
     primaryKey: true,
   },
-  userID: {
+  userId: {
     type: DataTypes.BIGINT,
     allowNull: false,
   },
-  learningid: {
+  educationalId: {
     type: DataTypes.BIGINT,
     allowNull: false,
   },

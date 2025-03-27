@@ -55,10 +55,10 @@ const router = express.Router();
  */
 router.get("/lcMajors", async (req, res) => {
   try {
-    const { programId, educationalCenterId, sortBy = "id", order = "ASC", page = 1, limit = 10 } = req.query;
+    const { programId, educationalcenterId, sortBy = "id", order = "ASC", page = 1, limit = 10 } = req.query;
     const whereClause = {};
     if (programId) whereClause.programId = programId;
-    if (educationalCenterId) whereClause.educationalCenterId = educationalCenterId;
+    if (educationalcenterId) whereClause.educationalcenterId = educationalcenterId;
     const offset = (parseInt(page) - 1) * parseInt(limit);
     const lcMajors = await LcMajors.findAll({
       where: whereClause,
@@ -115,7 +115,7 @@ router.get("/lcMajors/:id", async (req, res) => {
  *             properties:
  *               programId:
  *                 type: integer
- *               educationalCenterId:
+ *               educationalcenterId:
  *                 type: integer
  *     responses:
  *       201:
@@ -123,8 +123,8 @@ router.get("/lcMajors/:id", async (req, res) => {
  */
 router.post("/lcMajors", async (req, res) => {
   try {
-    const { programId, educationalCenterId } = req.body;
-    const newLcMajor = await LcMajors.create({ programId, educationalCenterId });
+    const { programId, educationalcenterId } = req.body;
+    const newLcMajor = await LcMajors.create({ programId, educationalcenterId });
     res.status(201).json(newLcMajor);
   } catch (error) {
     res.status(500).json({ error: "Server xatosi" });
@@ -154,7 +154,7 @@ router.delete("/lcMajors/:id", async (req, res) => {
     const lcMajor = await LcMajors.findByPk(req.params.id);
     if (!lcMajor) return res.status(404).json({ error: "LcMajor topilmadi" });
     await lcMajor.destroy();
-    res.json({ message: "LcMajor o‘chirildi" });
+    res.json({ message: "LcMajor o'chirildi" });
   } catch (error) {
     res.status(500).json({ error: "Server xatosi" });
   }
