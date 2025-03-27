@@ -1,11 +1,10 @@
 const { db } = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const UserEnrollment = db.define("UserEnrollment", {
+const Subject = db.define("Subject", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  userID: { type: DataTypes.INTEGER, allowNull: false },
-  learningid: { type: DataTypes.INTEGER, allowNull: false },
-  branchid: { type: DataTypes.INTEGER, allowNull: false },
+  name: { type: DataTypes.STRING, allowNull: false },
+  image: { type: DataTypes.STRING, allowNull: true },
 });
 
-module.exports = UserEnrollment;
+module.exports = Subject;

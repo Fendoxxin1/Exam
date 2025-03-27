@@ -1,4 +1,8 @@
 const { Subject } = require("../models/association.model");
+const {
+  subjectSchema,
+  updateSubjectSchema,
+} = require("../validation/subject.validation");
 
 const getSubjects = async (req, res) => {
   try {
@@ -28,6 +32,10 @@ const getSubjects = async (req, res) => {
 
 const createSubject = async (req, res) => {
   try {
+    const { error } = subjectSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const subject = await Subject.create(req.body);
     res.json(subject);
   } catch (error) {
@@ -55,6 +63,11 @@ const getSubjectById = async (req, res) => {
 
 const updateSubject = async (req, res) => {
   try {
+    const { error } = updateSubjectSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
     const subject = await Subject.findByPk(req.params.id);
     if (!subject) {
       return res.status(404).json({
