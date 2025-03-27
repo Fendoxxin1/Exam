@@ -1,4 +1,4 @@
-const EducationalCenter = require("../models/learningcenter.model");
+const EducationalCenter = require("../models/educationalcenter.model");
 const { Op } = require("sequelize");
 
 const getAllEducationalCenters = async (req, res) => {

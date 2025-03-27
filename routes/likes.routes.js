@@ -14,7 +14,7 @@ const router = express.Router();
 
 const likeValidation = [
   body("userId").isInt().withMessage("userId must be an integer"),
-  body("learningcId").isInt().withMessage("learningcId must be an integer"),
+  body("educationalId").isInt().withMessage("educationalId must be an integer"),
 ];
 
 const idValidation = [
@@ -42,7 +42,7 @@ const idValidation = [
  *         name: sortBy
  *         schema:
  *           type: string
- *         description: Field to sort by (e.g., "userId", "learningcId")
+ *         description: Field to sort by (e.g., "userId", "educationalId")
  *       - in: query
  *         name: order
  *         schema:
@@ -55,10 +55,10 @@ const idValidation = [
  *           type: integer
  *         description: Filter by userId
  *       - in: query
- *         name: learningcId
+ *         name: educationalId
  *         schema:
  *           type: integer
- *         description: Filter by learningcId
+ *         description: Filter by educationalId
  *     responses:
  *       200:
  *         description: A list of filtered and sorted likes
@@ -71,7 +71,7 @@ router.get(
     query("sortBy").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("userId").optional().isInt(),
-    query("learningcId").optional().isInt(),
+    query("educationalId").optional().isInt(),
   ],
   getLikes
 );
@@ -91,7 +91,7 @@ router.get(
  *             properties:
  *               userId:
  *                 type: integer
- *               learningcId:
+ *               educationalId:
  *                 type: integer
  *     responses:
  *       201:

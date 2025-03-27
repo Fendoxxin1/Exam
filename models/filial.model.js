@@ -7,6 +7,6 @@ const Filial = db.define("Filial", {
   region: { type: DataTypes.INTEGER },
   phoneNumber: { type: DataTypes.STRING },
   address: { type: DataTypes.STRING },
-  educationalCenterId: { type: DataTypes.INTEGER },
+  educationalcenterId: { type: DataTypes.INTEGER },
 });
 module.exports = Filial

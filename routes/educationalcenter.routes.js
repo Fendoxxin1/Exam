@@ -1,26 +1,26 @@
 const router = require("express").Router();
-const controller = require("../controller/learningCenter.controller");
+const controller = require("../controller/educationalcenter.controller");
 
 /**
  * @swagger
  * tags:
- *   name: LearningCenters
- *   description: API endpoints for managing learning centers
+ *   name: EduCenters
+ *   description: API endpoints for managing educational centers
  */
 
 /**
  * @swagger
- * /api/learningcenters:
+ * /educationalcenter:
  *   get:
  *     summary: Get all educational centers
- *     tags: [LearningCenters]
+ *     tags: [EduCenters]
  *     description: Retrieve a list of educational centers with optional filters.
  *     parameters:
  *       - in: query
  *         name: name
  *         schema:
  *           type: string
- *         description: Filter by learning center name
+ *         description: Filter by educational center name
  *       - in: query
  *         name: regionId
  *         schema:
@@ -45,14 +45,14 @@ const controller = require("../controller/learningCenter.controller");
  *       200:
  *         description: A list of educational centers
  */
-router.get("/learningcenters", controller.getAllEducationalCenters);
+router.get("/educationalcenter", controller.getAllEducationalCenters);
 
 /**
  * @swagger
- * /api/learningcenter:
+ * /educationalcenter:
  *   post:
  *     summary: Create a new educational center
- *     tags: [LearningCenters]
+ *     tags: [EduCenters]
  *     description: Adds a new educational center to the database.
  *     requestBody:
  *       required: true
@@ -77,14 +77,14 @@ router.get("/learningcenters", controller.getAllEducationalCenters);
  *       201:
  *         description: Educational center created successfully
  */
-router.post("/learningcenter", controller.createEducationalCenter);
+router.post("/educationalcenter", controller.createEducationalCenter);
 
 /**
  * @swagger
- * /api/learningcenter/{id}:
+ * /educationalcenter/{id}:
  *   get:
  *     summary: Get a single educational center by ID
- *     tags: [LearningCenters]
+ *     tags: [EduCenters]
  *     parameters:
  *       - in: path
  *         name: id
@@ -96,14 +96,14 @@ router.post("/learningcenter", controller.createEducationalCenter);
  *       200:
  *         description: Educational center details
  */
-router.get("/learningcenter/:id", controller.getEducationalCenterById);
+router.get("/educationalcenter/:id", controller.getEducationalCenterById);
 
 /**
  * @swagger
- * /api/learningcenter/{id}:
+ * /educationalcenter/{id}:
  *   patch:
  *     summary: Update an educational center
- *     tags: [LearningCenters]
+ *     tags: [EduCenters]
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,14 +134,14 @@ router.get("/learningcenter/:id", controller.getEducationalCenterById);
  *       200:
  *         description: Educational center updated successfully
  */
-router.patch("/learningcenter/:id", controller.updateEducationalCenter);
+router.patch("/educationalcenter/:id", controller.updateEducationalCenter);
 
 /**
  * @swagger
- * /api/learningcenter/{id}:
+ * /educationalcenter/{id}:
  *   delete:
  *     summary: Delete an educational center
- *     tags: [LearningCenters]
+ *     tags: [EduCenters]
  *     parameters:
  *       - in: path
  *         name: id
@@ -153,6 +153,6 @@ router.patch("/learningcenter/:id", controller.updateEducationalCenter);
  *       200:
  *         description: Educational center deleted successfully
  */
-router.delete("/learningcenter/:id", controller.deleteEducationalCenter);
+router.delete("/educationalcenter/:id", controller.deleteEducationalCenter);
 
 module.exports = router;

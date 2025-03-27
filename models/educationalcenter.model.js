@@ -12,7 +12,7 @@ const EducationalCenter = db.define(
     filialNumber: { type: DataTypes.INTEGER },
     phoneNumber: { type: DataTypes.STRING, allowNull: false },
   },
-  { tableName: "educational_center", timestamps: false }
+  { tableName: "educationalcenter", timestamps: false }
 );
 
 module.exports = EducationalCenter;

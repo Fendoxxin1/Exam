@@ -7,7 +7,7 @@ const categoryRoutes = require("./routes/resourceCategories.routes");
 const regionRoutes = require("./routes/regions.routes");
 const userRoutes = require("./routes/user.routes");
 const ProfessionRoutes = require("./routes/profession.routes");
-const learningCenter = require("./routes/learningcenter.routes");
+const learningCenter = require("./routes/educationalcenter.routes");
 const FilialRoutes = require("./routes/filial.routes");
 const lcMajorsRoutes = require("./routes/lcMajors.routes");
 const studyProgramRoutes = require("./routes/studyprogram.routes");
@@ -15,6 +15,8 @@ const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const LcMajors = require("./models/lcmajors.model");
+// const logger = require("./middleware/logger"); 
+
 const app = express();
 app.use(express.json());
 
@@ -49,6 +51,7 @@ const swaggerOptions = {
   apis: ["./routes/*.js"],
 };
 
+// app.use(logger);
 app.use("/api", userRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/likes", likeRoutes);
