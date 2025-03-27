@@ -2,7 +2,22 @@ const { Subject } = require("../models/association.model");
 
 const getSubjects = async (req, res) => {
   try {
-    const subjects = await Subject.findAll();
+    const {
+      page = 1,
+      limit = 10,
+      sort = "createdAt",
+      order = "DESC",
+      name,
+    } = req.query;
+    const whereCondition = {};
+    if (name) {
+      whereCondition.name = { [Op.like]: `%${name}%` };
+    }
+    const subjects = await Subject.findAll({
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      order: [[sort, order]],
+    });
     res.json(subjects);
   } catch (error) {
     res.status(500).json({
@@ -81,4 +96,3 @@ module.exports = {
   updateSubject,
   deleteSubject,
 };
-

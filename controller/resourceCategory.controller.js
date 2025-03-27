@@ -1,4 +1,4 @@
-const ResourceCategory = require("../models/resourceCategory.model");
+const { ResourceCategory } = require("../models/association.model");
 
 exports.getCategories = async (req, res) => {
   try {
@@ -42,7 +42,7 @@ exports.createCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     if (!id || isNaN(id)) {
       return res.status(400).json({ error: "Invalid category ID" });
     }

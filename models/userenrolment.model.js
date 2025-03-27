@@ -1,16 +1,23 @@
-const { db } = require("../config/db");
 const { DataTypes } = require("sequelize");
-const UserEnrolment = db.define("CourseRegistration", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  userId: {
-    type: DataTypes.INTEGER,
+const { db } = require("../config/db");
+const UserEnrollment = db.define("UserEnrollment", {
+  id: {
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  educationalCenterId: {
-    type: DataTypes.INTEGER,
+  userID: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
   },
-  filialId: {
-    type: DataTypes.INTEGER,
+  learningid: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
+  branchid: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
   },
 });
 
-module.exports = UserEnrolment;
+module.exports = UserEnrollment;

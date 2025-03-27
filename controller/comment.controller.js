@@ -1,4 +1,4 @@
-const { Comment } = require("../models/comment.model");
+const { Comment } = require("../models/association.model");
 
 exports.getComments = async (req, res) => {
   try {
@@ -39,7 +39,9 @@ exports.createComment = async (req, res) => {
       return res.status(400).json({ error: "Valid userId is required" });
     }
     if (!req.body.educationalCenterId || isNaN(req.body.educationalCenterId)) {
-      return res.status(400).json({ error: "Valid educationalCenterId is required" });
+      return res
+        .status(400)
+        .json({ error: "Valid educationalCenterId is required" });
     }
 
     const comment = await Comment.create(req.body);

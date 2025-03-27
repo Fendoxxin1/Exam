@@ -1,27 +1,10 @@
+const { db } = require("../config/db");
 const { DataTypes } = require("sequelize");
-  const {db} = require("../config/db");
 
-const IcMajors = db.define(
-  "IcMajors",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-  },
-  {
-    tableName: "icmajors",
-    timestamps: false,
-  }
-);
+const LcMajors = db.define("LcMajors", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  programId: { type: DataTypes.INTEGER },
+  educationalCenterId: { type: DataTypes.INTEGER },
+});
 
-module.exports = IcMajors;
+module.exports = LcMajors;

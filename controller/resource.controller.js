@@ -1,4 +1,4 @@
-const { Resource } = require("../models/resource.model");
+const { Resource } = require("../models/association.model");
 
 exports.getResources = async (req, res) => {
   try {
@@ -46,7 +46,10 @@ exports.updateResource = async (req, res) => {
       return res.status(400).json({ error: "Invalid resource ID" });
     }
 
-    const [updated] = await Resource.update(req.body, { where: { id }, individualHooks: true });
+    const [updated] = await Resource.update(req.body, {
+      where: { id },
+      individualHooks: true,
+    });
 
     if (!updated) {
       return res.status(404).json({ error: "Resource not found" });

@@ -9,6 +9,7 @@ const filialRoutes = require("./routes/filial.routes");
 const educationalCentersRoutes = require("./routes/educationalCenters.routes");
 const userRoutes = require("./routes/user.routes");
 const ProfessionRoutes = require("./routes/profession.routes");
+const studyProgramRoutes = require("./routes/studyprogram.routes");
 const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
@@ -54,8 +55,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/regions", regionRoutes);
 app.use("/api/educational-centers", educationalCentersRoutes);
 app.use("/api", ProfessionRoutes);
+app.use("/api", studyProgramRoutes);
 app.use("/api/filials", filialRoutes);
-
 
 connectDb();
 

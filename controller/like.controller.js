@@ -1,4 +1,4 @@
-const { Like } = require("../models/like.model");
+const { Like } = require("../models/association.model");
 
 exports.getLikes = async (req, res) => {
   try {
@@ -36,7 +36,9 @@ exports.createLike = async (req, res) => {
       return res.status(400).json({ error: "Valid userId is required" });
     }
     if (!req.body.educationalCenterId || isNaN(req.body.educationalCenterId)) {
-      return res.status(400).json({ error: "Valid educationalCenterId is required" });
+      return res
+        .status(400)
+        .json({ error: "Valid educationalCenterId is required" });
     }
 
     const like = await Like.create(req.body);

@@ -1,4 +1,4 @@
-const Region = require("../models/regions.model");
+const {Region} = require("../models/association.model");
 
 exports.getRegions = async (req, res) => {
   try {
