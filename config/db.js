@@ -7,7 +7,6 @@ const db = new Sequelize("n17", "root", "Odil5060", {
   logging: false,
 });
 
-
 // const db = new Sequelize("az", "root", "1234", {
 //   host: "localhost",
 //   dialect: "mysql",

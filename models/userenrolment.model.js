@@ -1,51 +1,16 @@
-module.exports = (sequelize, DataTypes) => {
-    const UserEnrolment = sequelize.define(
-      "UserEnrolment",
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        userId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: "Users",
-            key: "id",
-          },
-        },
-        learningcId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: "LearningCenter",
-            key: "id",
-          },
-        },
-        filialId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
-      },
-      {
-        tableName: "userenrolment",
-        timestamps: false,
-      }
-    );
-  
-    UserEnrolment.associate = (models) => {
-      UserEnrolment.belongsTo(models.Users, {
-        foreignKey: "userId",
-        as: "user",
-      });
-  
-      UserEnrolment.belongsTo(models.LearningCenter, {
-        foreignKey: "learningcId",
-        as: "learningCenter",
-      });
-    };
-  
-    return UserEnrolment;
-  };
-  
+const { db } = require("../config/db");
+const { DataTypes } = require("sequelize");
+const UserEnrolment = db.define("CourseRegistration", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  userId: {
+    type: DataTypes.INTEGER,
+  },
+  educationalCenterId: {
+    type: DataTypes.INTEGER,
+  },
+  filialId: {
+    type: DataTypes.INTEGER,
+  },
+});
+
+module.exports = UserEnrolment;

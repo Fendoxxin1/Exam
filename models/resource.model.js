@@ -19,7 +19,7 @@ const Resource = db.define(
     description: {
       type: DataTypes.TEXT,
     },
-    img: {
+    image: {
       type: DataTypes.STRING,
     },
     createdBy: {

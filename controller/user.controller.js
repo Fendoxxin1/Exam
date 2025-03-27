@@ -69,8 +69,15 @@ const loginUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User topilmadi" });
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) return res.status(403).json({ error: "Parol xato" });
-    const token = jwt.sign({ id: user.id }, "sirlisoz");
-    res.status(200).json({ token });
+    const accessToken = jwt.sign(
+      { id: user.id, role: user.role, email: user.email },
+      "sirlisoz"
+    );
+    const refreshToken = jwt.sign(
+      { id: user.id, role: user.role, email: user.email },
+      "refresh"
+    );
+    res.status(200).json({ accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -199,18 +206,15 @@ const refreshToken = async (req, res) => {
   }
 
   try {
-    const token = await jwt.verify(refreshToken, "secret_key");
+    const token = jwt.verify(refreshToken, "refresh");
 
     const accessToken = jwt.sign(
-      { id: token.id, role: token.role },
-      "secret_key",
-      {
-        expiresIn: "1h",
-      }
+      { id: token.id, role: token.role, email: token.email },
+      "sirlisoz"
     );
     res.status(201).json({ accessToken });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
