@@ -16,7 +16,7 @@ const router = express.Router();
  *   description: API endpoints for managing resources
  */
 
-// **VALIDATION RULES**
+
 const resourceValidation = [
   body("name").notEmpty().withMessage("Name is required"),
   body("media").notEmpty().withMessage("Media is required"),

@@ -1,9 +1,3 @@
-const { Sequelize } = require("sequelize");
-const sequelize = new Sequelize("database", "username", "password", {
-  host: "localhost",
-  dialect: "mysql",
-});
-
 const User = require("./user.model");
 const Branch = require("./filial.model");
 const LearningCenter = require("./educationalcenter.model");
