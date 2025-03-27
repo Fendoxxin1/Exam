@@ -15,6 +15,7 @@ const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const LcMajors = require("./models/lcmajors.model");
+const Subject = require("./models/subject.model");
 // const logger = require("./middleware/logger"); 
 
 const app = express();
@@ -63,6 +64,7 @@ app.use("/api", ProfessionRoutes);
 app.use("/api", studyProgramRoutes);
 app.use("/api", learningCenter);
 app.use("/api", lcMajorsRoutes);
+app.use("/api", Subject);
 
 connectDb();
 

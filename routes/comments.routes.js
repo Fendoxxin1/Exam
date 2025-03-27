@@ -15,7 +15,7 @@ const commentValidation = [
   body("comment").notEmpty().withMessage("Comment is required"),
   body("star").isFloat().withMessage("Star rating must be a number"),
   body("userId").isInt().withMessage("userId must be an integer"),
-  body("learningcId").isInt().withMessage("learningcId must be an integer"),
+  body("educationalId").isInt().withMessage("educationalId must be an integer"),
 ];
 
 const idValidation = [
@@ -72,7 +72,7 @@ router.get(
     query("sortBy").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("userId").optional().isInt(),
-    query("learningcId").optional().isInt(),
+    query("educationalId").optional().isInt(),
   ],
   getComments
 );

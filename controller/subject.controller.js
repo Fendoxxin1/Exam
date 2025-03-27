@@ -1,9 +1,7 @@
-const { Subject } = require("../models/association.model");
-const {
-  subjectSchema,
-  updateSubjectSchema,
-} = require("../validation/subject.validation");
+const { Op } = require("sequelize");
+const Subject = require("../models/subject.model");
 
+// Get all subjects with pagination, sorting, and search
 const getSubjects = async (req, res) => {
   try {
     const {
@@ -13,99 +11,98 @@ const getSubjects = async (req, res) => {
       order = "DESC",
       name,
     } = req.query;
-    const whereCondition = {};
-    if (name) {
-      whereCondition.name = { [Op.like]: `%${name}%` };
-    }
+    const offset = (page - 1) * limit;
+
+    const where = name ? { name: { [Op.iLike]: `%${name}%` } } : {};
+
     const subjects = await Subject.findAll({
+      where,
       limit: parseInt(limit),
-      offset: (parseInt(page) - 1) * parseInt(limit),
+      offset: parseInt(offset),
       order: [[sort, order]],
     });
-    res.json(subjects);
+
+    res.status(200).json(subjects);
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Error fetching subjects:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-const createSubject = async (req, res) => {
-  try {
-    const { error } = subjectSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    const subject = await Subject.create(req.body);
-    res.json(subject);
-  } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
+// Get a subject by ID
 const getSubjectById = async (req, res) => {
   try {
-    const subject = await Subject.findByPk(req.params.id);
+    const { id } = req.params;
+    const subject = await Subject.findByPk(id);
+
     if (!subject) {
-      return res.status(404).json({
-        error: "Subject not found",
-      });
+      return res.status(404).json({ message: "Subject not found" });
     }
-    res.json(subject);
+
+    res.status(200).json(subject);
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Error fetching subject:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
+// Create a new subject
+const createSubject = async (req, res) => {
+  try {
+    const { name, image } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
+    }
+
+    const subject = await Subject.create({ name, image });
+    res.status(201).json(subject);
+  } catch (error) {
+    console.error("Error creating subject:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update an existing subject
 const updateSubject = async (req, res) => {
   try {
-    const { error } = updateSubjectSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
+    const { id } = req.params;
+    const { name, image } = req.body;
+
+    const subject = await Subject.findByPk(id);
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found" });
     }
 
-    const subject = await Subject.findByPk(req.params.id);
-    if (!subject) {
-      return res.status(404).json({
-        error: "Subject not found",
-      });
-    }
-    await subject.update(req.body);
-    res.json(subject);
+    await subject.update({ name, image });
+    res.status(200).json(subject);
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Error updating subject:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
+// Delete a subject
 const deleteSubject = async (req, res) => {
   try {
-    const subject = await Subject.findByPk(req.params.id);
+    const { id } = req.params;
+    const subject = await Subject.findByPk(id);
+
     if (!subject) {
-      return res.status(404).json({
-        error: "Subject not found",
-      });
+      return res.status(404).json({ message: "Subject not found" });
     }
+
     await subject.destroy();
-    res.json({
-      message: "Subject deleted successfully",
-    });
+    res.status(200).json({ message: "Subject deleted successfully" });
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Error deleting subject:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports = {
   getSubjects,
-  createSubject,
   getSubjectById,
+  createSubject,
   updateSubject,
   deleteSubject,
 };

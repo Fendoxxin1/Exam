@@ -122,7 +122,7 @@ router.get("/filials/:id", async (req, res) => {
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, region, phoneNumber, address, educationalCenterId]
+ *             required: [name, region, phoneNumber, address, educationalcenterId]
  *             properties:
  *               name:
  *                 type: string
@@ -132,7 +132,7 @@ router.get("/filials/:id", async (req, res) => {
  *                 type: string
  *               address:
  *                 type: string
- *               educationalCenterId:
+ *               educationalcenterId:
  *                 type: integer
  *     responses:
  *       201:
@@ -143,8 +143,8 @@ router.get("/filials/:id", async (req, res) => {
 
 router.post("/filials/", async (req, res) => {
   try {
-    const { name, region, phoneNumber, address, educationalCenterId } = req.body;
-    const newFilial = await Filial.create({ name, region, phoneNumber, address, educationalCenterId });
+    const { name, region, phoneNumber, address, educationalcenterId } = req.body;
+    const newFilial = await Filial.create({ name, region, phoneNumber, address, educationalcenterId });
     res.status(201).json(newFilial);
   } catch (error) {
     res.status(500).json({ error: "Server xatosi" });
@@ -178,7 +178,7 @@ router.post("/filials/", async (req, res) => {
  *                 type: string
  *               address:
  *                 type: string
- *               educationalCenterId:
+ *               educationalcenterId:
  *                 type: integer
  *     responses:
  *       200:

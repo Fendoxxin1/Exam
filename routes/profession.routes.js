@@ -87,9 +87,9 @@ router.get("/professions", professionController.getProfessions);
  *             properties:
  *               name:
  *                 type: string
- *               img:
+ *               image:
  *                 type: string
- *                 nullable: true
+ *                 nullable: false
  *     responses:
  *       201:
  *         description: Profession created successfully
