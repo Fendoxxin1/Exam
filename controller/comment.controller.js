@@ -33,17 +33,15 @@ exports.getComments = async (req, res) => {
 exports.createComment = async (req, res) => {
   try {
     if (!req.body.text || typeof req.body.text !== "string") {
-      console.log(error);
-      
       return res.status(400).json({ error: "Comment text is required" });
     }
     if (!req.body.userId || isNaN(req.body.userId)) {
       return res.status(400).json({ error: "Valid userId is required" });
     }
-    if (!req.body.educationalCenterId || isNaN(req.body.educationalCenterId)) {
+    if (!req.body.educationalcenterId || isNaN(req.body.educationalcenterId)) {
       return res
         .status(400)
-        .json({ error: "Valid educationalCenterId is required" });
+        .json({ error: "Valid educationalcenterId is required" });
     }
 
     const comment = await Comment.create(req.body);
