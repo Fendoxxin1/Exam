@@ -5,9 +5,9 @@ const UserEnrollment = require("./userenrolment.model");
 const StudyProgram = require("./studyprogram.model");
 const LC_Major = require("./lcmajors.model");
 const Profession = require("./profession.model");
+const Subject = require("./subject.model");
 const Like = require("./like.model");
 const Region = require("./regions.model");
-const Subjects = require("./subject.model");
 const Resources = require("./resource.model");
 const ResourceCategory = require("./resourceCategory.model");
 const Comment = require("./comment.model");
@@ -25,7 +25,10 @@ LearningCenter.belongsToMany(User, {
 });
 
 User.belongsToMany(LearningCenter, { through: Like, foreignKey: "userId" });
-LearningCenter.belongsToMany(User, { through: Like, foreignKey: "educationalId" });
+LearningCenter.belongsToMany(User, {
+  through: Like,
+  foreignKey: "educationalId",
+});
 
 Filial.belongsTo(LearningCenter, { foreignKey: "educationalId" });
 LearningCenter.hasMany(Filial, { foreignKey: "educationalId" });
@@ -42,8 +45,8 @@ StudyProgram.belongsToMany(LearningCenter, {
   foreignKey: "majorid",
 });
 
-StudyProgram.belongsTo(Profession, { foreignKey: "profection" });
-Profession.hasMany(StudyProgram, { foreignKey: "profection" });
+StudyProgram.belongsTo(Profession, { foreignKey: "professionId" }); // profection -> professionId
+Profession.hasMany(StudyProgram, { foreignKey: "professionId" });
 
 User.hasMany(Comment, { foreignKey: "userId" });
 Comment.belongsTo(User, { foreignKey: "userId" });
@@ -57,8 +60,8 @@ ResourceCategory.hasMany(Resources, { foreignKey: "categoryId" });
 Resources.belongsTo(User, { foreignKey: "createby" });
 User.hasMany(Resources, { foreignKey: "createby" });
 
-StudyProgram.belongsTo(Subjects, { foreignKey: "subjectId" });
-Subjects.hasMany(StudyProgram, { foreignKey: "subjectId" });
+StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
+Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
 
 module.exports = {
   User,
@@ -70,7 +73,7 @@ module.exports = {
   Profession,
   Like,
   Region,
-  Subjects,
+  Subject,
   Resources,
   ResourceCategory,
   Comment,
