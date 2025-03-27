@@ -41,7 +41,7 @@ const router = express.Router();
  *           type: integer
  *         description: Region ID
  *       - in: query
- *         name: learningcenterid
+ *         name: educationalcenter
  *         schema:
  *           type: integer
  *         description: Ta'lim markazi ID
@@ -67,7 +67,7 @@ router.get(
     query("sort").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("region").optional().isInt(),
-    query("learningcenterid").optional().isInt(),
+    query("educationalcenter").optional().isInt(),
     query("page").optional().isInt({ min: 1 }),
     query("limit").optional().isInt({ min: 1 }),
   ],
@@ -110,7 +110,7 @@ router.get("/filials/:id", getBranchById);
  *                 type: string
  *               region:
  *                 type: integer
- *               learningcenterid:
+ *               educationalcenterid:
  *                 type: integer
  *               phoneNumber:
  *                 type: string
@@ -125,7 +125,7 @@ router.post(
   [
     body("name").notEmpty().isString(),
     body("region").isInt(),
-    body("learningcenterid").isInt(),
+    body("educationalcenter").isInt(),
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],
@@ -156,7 +156,7 @@ router.post(
  *                 type: string
  *               region:
  *                 type: integer
- *               learningcenterid:
+ *               educationalcenterid:
  *                 type: integer
  *               phoneNumber:
  *                 type: string
@@ -171,7 +171,7 @@ router.patch(
   [
     body("name").optional().isString(),
     body("region").optional().isInt(),
-    body("learningcenterid").optional().isInt(),
+    body("educationalcenter").optional().isInt(),
     body("phoneNumber").optional().isString(),
     body("address").optional().isString(),
   ],

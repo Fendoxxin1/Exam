@@ -11,7 +11,6 @@ const router = express.Router();
  *   description: API endpoints for managing comments
  */
 
-// **VALIDATION RULES**
 const commentValidation = [
   body("comment").notEmpty().withMessage("Comment is required"),
   body("star").isFloat().withMessage("Star rating must be a number"),

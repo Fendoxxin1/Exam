@@ -4,7 +4,7 @@ const {
   getUserEnrollments,
   createUserEnrollment,
   deleteUserEnrollment,
-} = require("../controller/userenrolment.controller");
+} = require("../controller/userenrollment.controller");
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const router = express.Router();
  *   description: API endpoints for managing user enrollments
  */
 
-// **VALIDATION RULES**
+
 const userEnrollmentValidation = [
   body("userId").isInt().withMessage("userId must be an integer"),
   body("learningcId").isInt().withMessage("learningcId must be an integer"),
@@ -26,7 +26,7 @@ const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
 
 /**
  * @swagger
- * /userenrolment:
+ * /userenrollment:
  *   get:
  *     summary: Get all user enrollments with filter, sorting, and pagination
  *     tags: [UserEnrollments]
@@ -63,7 +63,7 @@ const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
  *         description: A list of user enrollments
  */
 router.get(
-  "/",
+  "/userenrollment",
   [
     query("page").optional().isInt(),
     query("limit").optional().isInt(),
@@ -74,7 +74,7 @@ router.get(
   getUserEnrollments
 );
 
-router.post("/", userEnrollmentValidation, createUserEnrollment);
-router.delete("/:id", idValidation, deleteUserEnrollment);
+// router.post("/userenrollment", userEnrollmentValidation, createUserEnrollment);
+// router.delete("/userenrollment/:id", idValidation, deleteUserEnrollment);
 
 module.exports = router;
