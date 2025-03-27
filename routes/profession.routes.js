@@ -9,17 +9,66 @@ const { route } = require("./resources.routes");
  * @swagger
  * /professions:
  *   get:
- *     summary: Get all professions
+ *     summary: Get a list of professions
  *     tags: [Professions]
+ *     description: Retrieve a list of professions with optional filtering, pagination, and sorting.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: The page number for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page.
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           default: createdAt
+ *         description: Column to sort by.
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: DESC
+ *         description: Sorting order (ascending or descending).
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Filter professions by name (case-insensitive, partial match).
  *     responses:
  *       200:
- *         description: Professions list
+ *         description: A list of professions.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Profession'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     example: "Software Engineer"
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *       404:
+ *         description: Profession not found.
+ *       500:
+ *         description: Internal server error.
  */
 router.get("/professions", professionController.getProfessions);
 
@@ -51,11 +100,33 @@ router.post(
   authorize(["admin"]),
   professionController.createProfession
 );
+/**
+ * @swagger
+ * /professions/{id}:
+ *   get:
+ *     summary: Get a profession by ID
+ *     tags: [Professions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Profession ID
+ *     responses:
+ *       200:
+ *         description: A profession
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profession'
+ */
+router.get("/professions/:id", professionController.getProfessionById);
 
 /**
  * @swagger
  * /professions/{id}:
- *   put:
+ *   patch:
  *     summary: Update a profession by ID
  *     tags: [Professions]
  *     parameters:
@@ -81,7 +152,7 @@ router.post(
  *       200:
  *         description: Profession updated successfully
  */
-router.put(
+router.patch(
   "/professions/:id",
   authenticate,
   authorize(["admin", "super-admin"]),

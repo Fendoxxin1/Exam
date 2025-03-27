@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Profession } = require("../models/association.model");
 
 const getProfessions = async (req, res) => {
@@ -24,13 +25,27 @@ const createProfession = async (req, res) => {
 
 const getProfessionById = async (req, res) => {
   try {
-    const profession = await Profession.findByPk(req.params.id);
-    if (!profession) {
-      return res.status(404).json({
-        error: "Profession not found",
-      });
+    const {
+      page = 1,
+      limit = 10,
+      sort = "createdAt",
+      order = "DESC",
+      name,
+    } = req.query;
+    const whereCondition = {};
+    if (name) {
+      whereCondition.name = { [Op.like]: `%${name}%` };
     }
-    res.json(profession);
+    const professions = await Profession.findAll({
+      where: whereCondition,
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      order: [[sort, order]],
+    });
+    if (!professions) {
+      return res.status(404).json({ message: "Profession not found" });
+    }
+    res.json(professions);
   } catch (error) {
     res.status(500).json({
       error: error.message,

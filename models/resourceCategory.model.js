@@ -13,7 +13,7 @@ const ResourceCategory = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    img: {
+    image: {
       type: DataTypes.STRING,
     },
   },
