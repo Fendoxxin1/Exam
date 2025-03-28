@@ -8,10 +8,18 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Excel
+ *   description: Excel export APIs
+ */
+
+/**
+ * @swagger
  * /excel/export-users:
  *   get:
  *     summary: Export users to Excel
  *     description: Fetches all users and exports them as an Excel file.
+ *     tags: [Excel]
  *     responses:
  *       200:
  *         description: Excel file generated successfully
