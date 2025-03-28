@@ -1,4 +1,5 @@
-const { Comment } = require("../models/association.model");
+const { Comment, User } = require("../models/association.model");
+const EducationalCenter = require("../models/educationalcenter.model");
 
 exports.getComments = async (req, res) => {
   try {
@@ -16,6 +17,10 @@ exports.getComments = async (req, res) => {
     const { count, rows } = await Comment.findAndCountAll({
       limit,
       offset: (page - 1) * limit,
+      include: [
+        { model: User, as: "User" },
+        { model: EducationalCenter, as: "EducationalCenter" },
+      ],
     });
 
     res.json({
@@ -38,7 +43,12 @@ exports.getCommentById = async (req, res) => {
       return res.status(400).json({ error: "Invalid comment ID" });
     }
 
-    const comment = await Comment.findByPk(id);
+    const comment = await Comment.findByPk(id, {
+      include: [
+        { model: User, as: "User" },
+        { model: EducationalCenter, as: "EducationalCenter" },
+      ],
+    });
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
@@ -53,7 +63,6 @@ exports.getCommentById = async (req, res) => {
 
 exports.createComment = async (req, res) => {
   try {
-
     const { comment, star, userId, educationalcenterId } = req.body;
 
     if (!comment || typeof comment !== "string") {
@@ -70,7 +79,7 @@ exports.createComment = async (req, res) => {
 
     const newComment = await Comment.create({
       comment,
-      star: star || 0, 
+      star: star || 0,
       userId,
       educationalcenterId,
     });
@@ -81,7 +90,6 @@ exports.createComment = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 exports.deleteComment = async (req, res) => {
   try {
