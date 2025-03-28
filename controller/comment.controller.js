@@ -7,10 +7,10 @@ exports.getComments = async (req, res) => {
     page = parseInt(page);
     limit = parseInt(limit);
 
-    if (isNaN(page) || page < 1) {
+    if (!Number.isInteger(page) || page < 1) {
       return res.status(400).json({ error: "Invalid page number" });
     }
-    if (isNaN(limit) || limit < 1) {
+    if (!Number.isInteger(limit) || limit < 1) {
       return res.status(400).json({ error: "Invalid limit value" });
     }
 
@@ -23,15 +23,10 @@ exports.getComments = async (req, res) => {
       ],
     });
 
-    res.json({
-      total: count,
-      page,
-      limit,
-      data: rows,
-    });
+    res.json({ total: count, page, limit, data: rows });
   } catch (err) {
     console.error("Error fetching comments:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: err.message });
   }
 };
 
@@ -39,7 +34,7 @@ exports.getCommentById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    if (!id || isNaN(id)) {
+    if (!Number.isInteger(id) || id < 1) {
       return res.status(400).json({ error: "Invalid comment ID" });
     }
 
@@ -51,13 +46,13 @@ exports.getCommentById = async (req, res) => {
     });
 
     if (!comment) {
-      return res.status(404).json({ message: "Comment not found" });
+      return res.status(404).json({ error: "Comment not found" });
     }
 
     res.json(comment);
   } catch (err) {
     console.error("Error fetching comment:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: err.message });
   }
 };
 
@@ -68,13 +63,14 @@ exports.createComment = async (req, res) => {
     if (!comment || typeof comment !== "string") {
       return res.status(400).json({ error: "Comment text is required" });
     }
-    if (!userId || isNaN(userId)) {
+    if (!Number.isInteger(Number(userId)) || userId < 1) {
       return res.status(400).json({ error: "Valid userId is required" });
     }
-    if (!educationalcenterId || isNaN(educationalcenterId)) {
-      return res
-        .status(400)
-        .json({ error: "Valid educationalcenterId is required" });
+    if (!Number.isInteger(Number(educationalcenterId)) || educationalcenterId < 1) {
+      return res.status(400).json({ error: "Valid educationalcenterId is required" });
+    }
+    if (star !== undefined && (!Number.isInteger(Number(star)) || star < 0 || star > 5)) {
+      return res.status(400).json({ error: "Star rating must be an integer between 0 and 5" });
     }
 
     const newComment = await Comment.create({
@@ -87,7 +83,7 @@ exports.createComment = async (req, res) => {
     res.status(201).json(newComment);
   } catch (err) {
     console.error("Error creating comment:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: err.message });
   }
 };
 
@@ -95,19 +91,19 @@ exports.deleteComment = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
-    if (!id || isNaN(id)) {
+    if (!Number.isInteger(id) || id < 1) {
       return res.status(400).json({ error: "Invalid comment ID" });
     }
 
-    const deleted = await Comment.destroy({ where: { id } });
-
-    if (!deleted) {
-      return res.status(404).json({ message: "Comment not found" });
+    const comment = await Comment.findByPk(id);
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
     }
 
+    await comment.destroy();
     res.json({ message: "Comment deleted successfully" });
   } catch (err) {
     console.error("Error deleting comment:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error", details: err.message });
   }
 };
