@@ -1,7 +1,10 @@
 const { Op } = require("sequelize");
 const Subject = require("../models/subject.model");
-
-// Get all subjects with pagination, sorting, and search
+const {
+  subjectSchema,
+  updateSubjectSchema,
+} = require("../validation/subject.validation");
+const StudyProgram = require("../models/studyprogram.model");
 const getSubjects = async (req, res) => {
   try {
     const {
@@ -20,6 +23,12 @@ const getSubjects = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset),
       order: [[sort, order]],
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
     });
 
     res.status(200).json(subjects);
@@ -29,11 +38,17 @@ const getSubjects = async (req, res) => {
   }
 };
 
-// Get a subject by ID
 const getSubjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    const subject = await Subject.findByPk(id);
+    const subject = await Subject.findByPk(id, {
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
+    });
 
     if (!subject) {
       return res.status(404).json({ message: "Subject not found" });
@@ -46,9 +61,14 @@ const getSubjectById = async (req, res) => {
   }
 };
 
-// Create a new subject
 const createSubject = async (req, res) => {
   try {
+    const { error } = subjectSchema.validate(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "validation error", error: error.details[0].message });
+    }
     const { name, image } = req.body;
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
@@ -62,9 +82,14 @@ const createSubject = async (req, res) => {
   }
 };
 
-// Update an existing subject
 const updateSubject = async (req, res) => {
   try {
+    const { error } = updateSubjectSchema.validate(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "validation error", error: error.details[0].message });
+    }
     const { id } = req.params;
     const { name, image } = req.body;
 
@@ -81,7 +106,6 @@ const updateSubject = async (req, res) => {
   }
 };
 
-// Delete a subject
 const deleteSubject = async (req, res) => {
   try {
     const { id } = req.params;

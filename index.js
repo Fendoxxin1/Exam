@@ -16,7 +16,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const LcMajors = require("./routes/lcMajors.routes");
 const Subject = require("./routes/subject.routes");
-// const logger = require("./middleware/logger");
+const logger = require("./middleware/logger");
 
 const app = express();
 app.use(express.json());
@@ -52,7 +52,7 @@ const swaggerOptions = {
   apis: ["./routes/*.js"],
 };
 
-// app.use(logger);
+app.use(logger);
 app.use("/api", userRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/likes", likeRoutes);

@@ -1,8 +1,24 @@
-const { StudyProgram } = require("../models/association.model");
+const { StudyProgram, Profession } = require("../models/association.model");
+const EducationalCenter = require("../models/educationalcenter.model");
+const Subject = require("../models/subject.model");
+const {
+  createStudyProgramSchema,
+  updateStudyProgramSchema,
+} = require("../validation/studyprogram.validation");
 
 const getAllStudyPrograms = async (req, res) => {
   try {
-    const studyPrograms = await StudyProgram.findAll();
+    const studyPrograms = await StudyProgram.findAll({
+      include: [
+        { model: Profession, as: "Profession" },
+        { model: Subject, as: "Subject" },
+        {
+          model: EducationalCenter,
+          as: "EducationalCenters",
+          through: { attributes: [] },
+        },
+      ],
+    });
     res.status(200).json(studyPrograms);
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error });
@@ -12,7 +28,17 @@ const getAllStudyPrograms = async (req, res) => {
 const getStudyProgramById = async (req, res) => {
   try {
     const { id } = req.params;
-    const studyProgram = await StudyProgram.findByPk(id);
+    const studyProgram = await StudyProgram.findByPk(id, {
+      include: [
+        { model: Profession, as: "Profession" },
+        { model: Subject, as: "Subject" },
+        {
+          model: EducationalCenter,
+          as: "EducationalCenters",
+          through: { attributes: [] },
+        },
+      ],
+    });
     if (!studyProgram) {
       return res.status(404).json({ message: "Study program not found" });
     }
@@ -24,6 +50,10 @@ const getStudyProgramById = async (req, res) => {
 
 const createStudyProgram = async (req, res) => {
   try {
+    const { error } = createStudyProgramSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: "Validation error", error });
+    }
     const { name, image, professionId, subjectId } = req.body;
     const newProgram = await StudyProgram.create({
       name,
@@ -39,6 +69,10 @@ const createStudyProgram = async (req, res) => {
 
 const updateStudyProgram = async (req, res) => {
   try {
+    const { error } = updateStudyProgramSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: "Validation error", error });
+    }
     const { id } = req.params;
     const { name, image, professionId, subjectId } = req.body;
     const studyProgram = await StudyProgram.findByPk(id);

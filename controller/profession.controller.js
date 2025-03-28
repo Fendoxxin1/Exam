@@ -1,9 +1,16 @@
 const { Op } = require("sequelize");
-const { Profession } = require("../models/association.model");
+const { Profession, StudyProgram } = require("../models/association.model");
 
 const getProfessions = async (req, res) => {
   try {
-    const professions = await Profession.findAll();
+    const professions = await Profession.findAll({
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
+    });
     res.json(professions);
   } catch (error) {
     res.status(500).json({
@@ -41,6 +48,13 @@ const getProfessionById = async (req, res) => {
       limit: parseInt(limit),
       offset: (parseInt(page) - 1) * parseInt(limit),
       order: [[sort, order]],
+
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
     });
     if (!professions) {
       return res.status(404).json({ message: "Profession not found" });
