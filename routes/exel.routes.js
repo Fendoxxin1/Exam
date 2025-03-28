@@ -33,7 +33,6 @@ router.get("/export-users", async (req, res) => {
       return res.status(404).json({ error: "No users found" });
     }
 
-    // ✅ Exports papkasini yaratish
     const exportDir = path.join(__dirname, "../exports");
     if (!fs.existsSync(exportDir)) {
       fs.mkdirSync(exportDir, { recursive: true });
