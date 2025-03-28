@@ -89,7 +89,15 @@ router.get("/subjects", subjectController.getSubjects);
  *         description: Subject found
  *         content:
  *           application/json:
- *       
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: Mathematics
  *       404:
  *         description: Subject not found
  */
