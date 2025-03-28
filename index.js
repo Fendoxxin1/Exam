@@ -19,7 +19,7 @@ const uploads = require("./routes/uploads.routes");
 const path = require("path");
 const sessionRoutes = require("./routes/session.routes");
 const logger = require("./middleware/logger");
-const  excelRoutes = require("./routes/exel.routes");
+const excelRoutes = require("./routes/exel.routes");
 
 const app = express();
 app.use(express.json());
