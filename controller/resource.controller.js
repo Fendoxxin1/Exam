@@ -1,5 +1,9 @@
 const { error } = require("winston");
-const { Resource } = require("../models/association.model");
+const {
+  Resource,
+  User,
+  ResourceCategory,
+} = require("../models/association.model");
 
 exports.getResources = async (req, res) => {
   try {
@@ -17,6 +21,10 @@ exports.getResources = async (req, res) => {
     const { count, rows } = await Resource.findAndCountAll({
       limit,
       offset: (page - 1) * limit,
+      include: [
+        { model: User, as: "User" },
+        { model: ResourceCategory, as: "ResourceCategory" },
+      ],
     });
 
     res.json({ total: count, page, limit, data: rows });
@@ -34,7 +42,12 @@ exports.getResourceById = async (req, res) => {
       return res.status(400).json({ error: "Invalid resource ID" });
     }
 
-    const resource = await Resource.findByPk(id);
+    const resource = await Resource.findByPk(id, {
+      include: [
+        { model: User, as: "User" },
+        { model: ResourceCategory, as: "ResourceCategory" },
+      ],
+    });
 
     if (!resource) {
       return res.status(404).json({ error: "Resource not found" });
@@ -55,7 +68,13 @@ exports.createResource = async (req, res) => {
       return res.status(400).json({ error: "Valid resource name is required" });
     }
 
-    const resource = await Resource.create({ name, media, description, createdBy, categoryId });
+    const resource = await Resource.create({
+      name,
+      media,
+      description,
+      createdBy,
+      categoryId,
+    });
     res.status(201).json(resource);
   } catch (err) {
     console.error("Error creating resource:", err);
