@@ -11,7 +11,6 @@ const router = express.Router();
  *   description: API endpoints for managing regions
  */
 
-// **VALIDATION RULES**
 const regionValidation = [
   body("name").notEmpty().withMessage("Name is required"),
 ];
