@@ -37,8 +37,10 @@ const registerUserSchema = Joi.object({
   image: Joi.string().uri().optional().messages({
     "string.uri": "Image must be a valid URL",
   }),
-  role: Joi.string().required().message({
-    "string.required": "Role is required",
+  role: Joi.string().required().messages({
+    "string.base": "Role must be a string",
+    "string.empty": "Role is required",
+    "any.required": "Role is required",
   }),
 });
 
