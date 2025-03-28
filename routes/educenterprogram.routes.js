@@ -163,9 +163,9 @@ router.post("/educenterprogram", async (req, res) => {
     if (!center) {
       return res.status(400).json({ error: "Educational Center not found" });
     }
-    const program = await Program.findByPk(programId); 
+    const program = await StudyProgram.findByPk(programId); 
     if (!program) {
-      return res.status(400).json({ error: "Program not found" });
+      return res.status(400).json({ error: "Study not found" });
     }
 
     const newEducenterProgram = await EducenterProgram.create({
