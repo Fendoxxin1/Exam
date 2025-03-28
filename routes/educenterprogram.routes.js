@@ -152,7 +152,6 @@ router.get("/educenterprogram/:id", async (req, res) => {
  */
 router.post("/educenterprogram", async (req, res) => {
   try {
-    // Joi validatsiyasi
     const { error } = createEducenterProgramSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -160,12 +159,11 @@ router.post("/educenterprogram", async (req, res) => {
 
     const { programId, educationalcenterId } = req.body;
 
-    // Foreign key tekshiruvi
     const center = await EducationalCenter.findByPk(educationalcenterId);
     if (!center) {
       return res.status(400).json({ error: "Educational Center not found" });
     }
-    const program = await Program.findByPk(programId); // Program modeli bo‘lsa
+    const program = await Program.findByPk(programId); 
     if (!program) {
       return res.status(400).json({ error: "Program not found" });
     }

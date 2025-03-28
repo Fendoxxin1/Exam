@@ -225,7 +225,6 @@ router.post("/filials", async (req, res) => {
  */
 router.patch("/filials/:id", async (req, res) => {
   try {
-    // Joi validatsiyasi
     const { error } = updateFilialSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
