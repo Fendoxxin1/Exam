@@ -1,6 +1,13 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const { getCategories, getCategoryById, createCategory, deleteCategory } = require("../controller/resourceCategory.controller");
+const {
+  getCategories,
+  getCategoryById,
+  createCategory,
+  deleteCategory,
+} = require("../controller/resourceCategory.controller");
+const { authorize } = require("../middleware/role");
+const authenticate = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -11,15 +18,12 @@ const router = express.Router();
  *   description: API endpoints for managing resource categories
  */
 
-
 const categoryValidation = [
   body("name").notEmpty().withMessage("Name is required"),
   body("image").optional(),
 ];
 
-const idValidation = [
-  param("id").isInt().withMessage("Invalid ID format"),
-];
+const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
 
 /**
  * @swagger
@@ -67,6 +71,8 @@ router.get(
     query("order").optional().isIn(["asc", "desc"]),
     query("name").optional().isString(),
   ],
+  authenticate,
+  authorize(["admin"]),
   getCategories
 );
 
@@ -113,7 +119,13 @@ router.get("/:id", idValidation, getCategoryById);
  *       201:
  *         description: Category created successfully
  */
-router.post("/", categoryValidation, createCategory);
+router.post(
+  "/",
+  authenticate,
+  authorize(["admin"]),
+  categoryValidation,
+  createCategory
+);
 
 /**
  * @swagger
@@ -132,6 +144,12 @@ router.post("/", categoryValidation, createCategory);
  *       204:
  *         description: Category deleted successfully
  */
-router.delete("/:id", idValidation, deleteCategory);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize(["admin"]),
+  idValidation,
+  deleteCategory
+);
 
 module.exports = router;

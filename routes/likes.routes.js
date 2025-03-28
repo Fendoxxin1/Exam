@@ -1,7 +1,8 @@
 const express = require("express");
 const { body, param } = require("express-validator");
 const { createLike, deleteLike } = require("../controller/like.controller");
-
+const authenticate = require("../middleware/auth");
+const { authorize } = require("../middleware/role");
 const router = express.Router();
 
 /**
@@ -11,15 +12,14 @@ const router = express.Router();
  *   description: API endpoints for managing likes
  */
 
-
 const likeValidation = [
   body("userId").isInt().withMessage("userId must be an integer"),
-  body("educationalCenterId").isInt().withMessage("educationalCenterId must be an integer"),
+  body("educationalCenterId")
+    .isInt()
+    .withMessage("educationalCenterId must be an integer"),
 ];
 
-const idValidation = [
-  param("id").isInt().withMessage("Invalid ID format"),
-];
+const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
 
 /**
  * @swagger
@@ -42,7 +42,7 @@ const idValidation = [
  *       201:
  *         description: Like created successfully
  */
-router.post("/", likeValidation, createLike);
+router.post("/", authenticate, likeValidation, createLike);
 
 /**
  * @swagger
@@ -61,6 +61,12 @@ router.post("/", likeValidation, createLike);
  *       204:
  *         description: Like deleted successfully
  */
-router.delete("/:id", idValidation, deleteLike);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize(["admin"]),
+  idValidation,
+  deleteLike
+);
 
 module.exports = router;

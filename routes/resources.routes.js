@@ -7,7 +7,8 @@ const {
   updateResource,
   deleteResource,
 } = require("../controller/resource.controller");
-
+const authenticate = require("../middleware/auth");
+const { authorize } = require("../middleware/role");
 const router = express.Router();
 
 /**
@@ -25,9 +26,7 @@ const resourceValidation = [
   body("categoryId").isInt().withMessage("categoryId must be an integer"),
 ];
 
-const idValidation = [
-  param("id").isInt().withMessage("Invalid ID format"),
-];
+const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
 
 /**
  * @swagger
@@ -139,7 +138,13 @@ router.get("/:id", idValidation, getResourceById);
  *       201:
  *         description: Resource created successfully
  */
-router.post("/", resourceValidation, createResource);
+router.post(
+  "/",
+  authenticate,
+  authorize(["admin"]),
+  resourceValidation,
+  createResource
+);
 
 /**
  * @swagger
@@ -176,7 +181,13 @@ router.post("/", resourceValidation, createResource);
  *       200:
  *         description: Resource updated successfully
  */
-router.patch("/:id", idValidation.concat(resourceValidation), updateResource);
+router.patch(
+  "/:id",
+  authenticate,
+  authorize(["admin", "super-admin"]),
+  idValidation.concat(resourceValidation),
+  updateResource
+);
 
 /**
  * @swagger
@@ -195,6 +206,12 @@ router.patch("/:id", idValidation.concat(resourceValidation), updateResource);
  *       204:
  *         description: Resource deleted successfully
  */
-router.delete("/:id", idValidation, deleteResource);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize(["admin"]),
+  idValidation,
+  deleteResource
+);
 
 module.exports = router;

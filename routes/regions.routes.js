@@ -1,6 +1,15 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const { getRegions, getRegionById, createRegion, updateRegion, deleteRegion } = require("../controller/regions.controller");
+
+const {
+  getRegions,
+  getRegionById,
+  createRegion,
+  updateRegion,
+  deleteRegion,
+} = require("../controller/regions.controller");
+const authenticate = require("../middleware/auth");
+const { authorize } = require("../middleware/role");
 
 const router = express.Router();
 
@@ -15,9 +24,7 @@ const regionValidation = [
   body("name").notEmpty().withMessage("Name is required"),
 ];
 
-const idValidation = [
-  param("id").isInt().withMessage("Invalid ID format"),
-];
+const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
 
 /**
  * @swagger
@@ -58,6 +65,8 @@ const idValidation = [
  */
 router.get(
   "/",
+  authenticate,
+  authorize(["admin"]),
   [
     query("page").optional().isInt(),
     query("limit").optional().isInt(),
@@ -85,7 +94,13 @@ router.get(
  *       200:
  *         description: Region data
  */
-router.get("/:id", idValidation, getRegionById);
+router.get(
+  "/:id",
+  authenticate,
+  authorize(["admin"]),
+  idValidation,
+  getRegionById
+);
 
 /**
  * @swagger
@@ -106,7 +121,13 @@ router.get("/:id", idValidation, getRegionById);
  *       201:
  *         description: Region created successfully
  */
-router.post("/", regionValidation, createRegion);
+router.post(
+  "/",
+  authenticate,
+  authorize(["admin"]),
+  regionValidation,
+  createRegion
+);
 
 /**
  * @swagger
@@ -134,7 +155,13 @@ router.post("/", regionValidation, createRegion);
  *       200:
  *         description: Region updated successfully
  */
-router.patch("/:id", idValidation.concat(regionValidation), updateRegion);
+router.patch(
+  "/:id",
+  authenticate,
+  authorize(["admin", "super-admin"]),
+  idValidation.concat(regionValidation),
+  updateRegion
+);
 
 /**
  * @swagger
@@ -153,6 +180,12 @@ router.patch("/:id", idValidation.concat(regionValidation), updateRegion);
  *       204:
  *         description: Region deleted successfully
  */
-router.delete("/:id", idValidation, deleteRegion);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize(["admin"]),
+  idValidation,
+  deleteRegion
+);
 
 module.exports = router;
