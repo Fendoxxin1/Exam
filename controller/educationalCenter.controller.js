@@ -7,6 +7,7 @@ const {
 const StudyProgram = require("../models/studyprogram.model");
 const Filial = require("../models/filial.model");
 const User = require("../models/user.model");
+const Comment = require("../models/comment.model");
 
 const getAllEducationalCenters = async (req, res) => {
   try {
@@ -25,7 +26,7 @@ const getAllEducationalCenters = async (req, res) => {
       limit,
       offset,
       include: [
-        { model: Filial, as: "Branches" },
+        { model: Filial },
         {
           model: StudyProgram,
           as: "StudyPrograms",
@@ -51,7 +52,7 @@ const getEducationalCenterById = async (req, res) => {
   try {
     const center = await EducationalCenter.findByPk(req.params.id, {
       include: [
-        { model: Branch, as: "Branches" },
+        { model: Filial},
         {
           model: StudyProgram,
           as: "StudyPrograms",

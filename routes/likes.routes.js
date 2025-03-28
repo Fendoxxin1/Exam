@@ -36,7 +36,7 @@ const idValidation = [param("id").isInt().withMessage("Invalid ID format")];
  *             properties:
  *               userId:
  *                 type: integer
- *               educationalcenterId:
+ *               educationalCenterId:
  *                 type: integer
  *     responses:
  *       201:
