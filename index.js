@@ -18,6 +18,7 @@ const Subject = require("./routes/subject.routes");
 const uploads = require("./routes/uploads.routes");
 const path = require("path");
 const logger = require("./middleware/logger");
+const  excelRoutes = require("./routes/exel.routes");
 
 
 const app = express();
@@ -68,6 +69,7 @@ app.use("/api", learningCenter);
 app.use("/api", educenterprogramRoutes);
 app.use("/api", Subject);
 app.use("/api/", uploads);
+app.use("/api/excel", excelRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
