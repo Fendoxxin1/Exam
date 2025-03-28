@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const db = require("../models/association.model");
 const UserEnrolment = db.UserEnrollment;
 
-exports.createUserEnrolment = async (req, res) => {
+const createUserEnrolment = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -21,7 +21,7 @@ exports.createUserEnrolment = async (req, res) => {
   }
 };
 
-exports.deleteUserEnrolment = async (req, res) => {
+const deleteUserEnrolment = async (req, res) => {
   try {
     const { id } = req.params;
     const enrolment = await UserEnrolment.findByPk(id);
@@ -35,3 +35,5 @@ exports.deleteUserEnrolment = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+module.exports = { deleteUserEnrolment, createUserEnrolment };
