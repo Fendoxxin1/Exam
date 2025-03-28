@@ -18,7 +18,7 @@ const Subject = require("./routes/subject.routes");
 const uploads = require("./routes/uploads.routes");
 const path = require("path");
 
-// const logger = require("./middleware/logger");
+const logger = require("./middleware/logger");
 
 const app = express();
 app.use(express.json());
