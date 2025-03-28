@@ -1,7 +1,7 @@
 const express = require("express");
 const EducenterProgram = require("../models/educenterprogram.model");
-const EducationalCenter = require("../models/educationalcenter.model"); // Foreign key tekshiruvi uchun
-const StudyProgram = require("../models/studyprogram.model"); // Agar Program modeli bo‘lsa
+const EducationalCenter = require("../models/educationalcenter.model"); 
+const StudyProgram = require("../models/studyprogram.model"); 
 const { Op } = require("sequelize");
 const { createEducenterProgramSchema } = require("../validation/educenterprogram.validation");
 
