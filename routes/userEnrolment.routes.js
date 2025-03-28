@@ -10,7 +10,7 @@ const router = express.Router();
  *   - name: User Enrolments
  *     description: Operations related to user enrolments
  * 
- * /api/userenrolments:
+ * /userenrolments:
  *   post:
  *     tags:
  *       - User Enrolments
@@ -44,7 +44,7 @@ router.post(
 
 /** 
  * @swagger 
- * /api/userenrolments/{id}:
+ * /userenrolments/{id}:
  *   delete:
  *     tags:
  *       - User Enrolments

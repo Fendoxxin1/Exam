@@ -1,6 +1,11 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const Filial = require("../models/filial.model");
+const EducationalCenter = require("../models/educationalcenter.model"); 
+const {
+  createFilialSchema,
+  updateFilialSchema,
+} = require("../validation/filial.validation");
 
 const router = express.Router();
 
@@ -55,7 +60,6 @@ const router = express.Router();
  *       500:
  *         description: Server xatosi
  */
-
 router.get("/filials", async (req, res) => {
   try {
     const { region, name, sort = "id", order = "asc", page = 1, limit = 10 } = req.query;
@@ -82,7 +86,7 @@ router.get("/filials", async (req, res) => {
  * @swagger
  * /filials/{id}:
  *   get:
- *     summary: ID bo‘yicha bitta filialni olish
+ *     summary: ID bo'yicha bitta filialni olish
  *     tags: [Filial]
  *     parameters:
  *       - in: path
@@ -99,7 +103,6 @@ router.get("/filials", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-
 router.get("/filials/:id", async (req, res) => {
   try {
     const filial = await Filial.findByPk(req.params.id);
@@ -114,7 +117,7 @@ router.get("/filials/:id", async (req, res) => {
  * @swagger
  * /filials:
  *   post:
- *     summary: Yangi filial qo‘shish
+ *     summary: Yangi filial qo'shish
  *     tags: [Filial]
  *     requestBody:
  *       required: true
@@ -127,7 +130,7 @@ router.get("/filials/:id", async (req, res) => {
  *               name:
  *                 type: string
  *               region:
- *                 type: string
+ *                 type: integer
  *               phoneNumber:
  *                 type: string
  *               address:
@@ -137,16 +140,46 @@ router.get("/filials/:id", async (req, res) => {
  *     responses:
  *       201:
  *         description: Filial yaratildi
+ *       400:
+ *         description: Noto'g'ri ma'lumotlar
  *       500:
  *         description: Server xatosi
  */
-
-router.post("/filials/", async (req, res) => {
+router.post("/filials", async (req, res) => {
   try {
+    const { error } = createFilialSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
     const { name, region, phoneNumber, address, educationalcenterId } = req.body;
-    const newFilial = await Filial.create({ name, region, phoneNumber, address, educationalcenterId });
+
+    const center = await EducationalCenter.findByPk(educationalcenterId);
+    if (!center) {
+      return res.status(400).json({ error: "Educational Center not found" });
+    }
+
+    const lastFilial = await Filial.findOne({
+      where: { educationalcenterId },
+      order: [['filialNumber', 'DESC']], 
+    });
+
+
+    const newFilialNumber = lastFilial ? lastFilial.filialNumber + 1 : 1;
+
+    
+    const newFilial = await Filial.create({
+      name,
+      region,
+      phoneNumber,
+      address,
+      educationalcenterId,
+      filialNumber: newFilialNumber,
+    });
+
     res.status(201).json(newFilial);
   } catch (error) {
+    console.error("Error creating filial:", error);
     res.status(500).json({ error: "Server xatosi" });
   }
 });
@@ -173,7 +206,7 @@ router.post("/filials/", async (req, res) => {
  *               name:
  *                 type: string
  *               region:
- *                 type: string
+ *                 type: integer
  *               phoneNumber:
  *                 type: string
  *               address:
@@ -183,20 +216,35 @@ router.post("/filials/", async (req, res) => {
  *     responses:
  *       200:
  *         description: Filial yangilandi
+ *       400:
+ *         description: Noto'g'ri ma'lumotlar
  *       404:
  *         description: Filial topilmadi
  *       500:
  *         description: Server xatosi
  */
-
 router.patch("/filials/:id", async (req, res) => {
   try {
+    // Joi validatsiyasi
+    const { error } = updateFilialSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
     const filial = await Filial.findByPk(req.params.id);
     if (!filial) return res.status(404).json({ error: "Filial topilmadi" });
+
+    if (req.body.educationalcenterId) {
+      const center = await EducationalCenter.findByPk(req.body.educationalcenterId);
+      if (!center) {
+        return res.status(400).json({ error: "Educational Center not found" });
+      }
+    }
 
     await filial.update(req.body);
     res.json(filial);
   } catch (error) {
+    console.error("Error updating filial:", error);
     res.status(500).json({ error: "Server xatosi" });
   }
 });
@@ -205,7 +253,7 @@ router.patch("/filials/:id", async (req, res) => {
  * @swagger
  * /filials/{id}:
  *   delete:
- *     summary: Filialni o‘chirish
+ *     summary: Filialni o'chirish
  *     tags: [Filial]
  *     parameters:
  *       - in: path
@@ -215,20 +263,19 @@ router.patch("/filials/:id", async (req, res) => {
  *           type: integer
  *     responses:
  *       200:
- *         description: Filial o‘chirildi
+ *         description: Filial o'chirildi
  *       404:
  *         description: Filial topilmadi
  *       500:
  *         description: Server xatosi
  */
-
 router.delete("/filials/:id", async (req, res) => {
   try {
     const filial = await Filial.findByPk(req.params.id);
     if (!filial) return res.status(404).json({ error: "Filial topilmadi" });
 
     await filial.destroy();
-    res.json({ message: "Filial o‘chirildi" });
+    res.json({ message: "Filial o'chirildi" });
   } catch (error) {
     res.status(500).json({ error: "Server xatosi" });
   }

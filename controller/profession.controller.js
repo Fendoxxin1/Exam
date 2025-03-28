@@ -1,9 +1,16 @@
 const { Op } = require("sequelize");
-const { Profession } = require("../models/association.model");
+const { Profession, StudyProgram } = require("../models/association.model");
 
 const getProfessions = async (req, res) => {
   try {
-    const professions = await Profession.findAll();
+    const professions = await Profession.findAll({
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
+    });
     res.json(professions);
   } catch (error) {
     res.status(500).json({
@@ -22,36 +29,37 @@ const createProfession = async (req, res) => {
     });
   }
 };
-
 const getProfessionById = async (req, res) => {
   try {
-    const {
-      page = 1,
-      limit = 10,
-      sort = "createdAt",
-      order = "DESC",
-      name,
-    } = req.query;
-    const whereCondition = {};
-    if (name) {
-      whereCondition.name = { [Op.like]: `%${name}%` };
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "Invalid ID format" });
     }
     const professions = await Profession.findAll({
       where: whereCondition,
       limit: parseInt(limit),
       offset: (parseInt(page) - 1) * parseInt(limit),
       order: [[sort, order]],
+
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
     });
     if (!professions) {
       return res.status(404).json({ message: "Profession not found" });
     }
-    res.json(professions);
+
+    res.json(profession);
   } catch (error) {
     res.status(500).json({
       error: error.message,
     });
   }
 };
+
 
 const updateProfession = async (req, res) => {
   try {

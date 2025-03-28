@@ -8,5 +8,9 @@ const Filial = db.define("Filial", {
   phoneNumber: { type: DataTypes.STRING },
   address: { type: DataTypes.STRING },
   educationalcenterId: { type: DataTypes.INTEGER },
+  filialNumber:{
+    type:DataTypes.INTEGER,
+    allowNull:false
+  },
 });
 module.exports = Filial

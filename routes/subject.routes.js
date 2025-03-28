@@ -118,7 +118,12 @@ router.get("/subject/:id", subjectController.getSubjectById);
  *       201:
  *         description: Subject created successfully
  */
-router.post("/subjects", subjectController.createSubject);
+router.post(
+  "/subjects",
+  // authenticate,
+  // authorize(["admin"]),
+  subjectController.createSubject
+);
 
 /**
  * @swagger
@@ -142,7 +147,7 @@ router.post("/subjects", subjectController.createSubject);
  *             properties:
  *               name:
  *                 type: string
- *               description:
+ *               image:
  *                 type: string
  *                 nullable: true
  *     responses:

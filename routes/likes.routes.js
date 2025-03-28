@@ -11,7 +11,7 @@ const router = express.Router();
  *   description: API endpoints for managing likes
  */
 
-// **VALIDATION RULES**
+
 const likeValidation = [
   body("userId").isInt().withMessage("userId must be an integer"),
   body("educationalCenterId").isInt().withMessage("educationalCenterId must be an integer"),
@@ -36,7 +36,7 @@ const idValidation = [
  *             properties:
  *               userId:
  *                 type: integer
- *               educationalCenterId:
+ *               educationalcenterId:
  *                 type: integer
  *     responses:
  *       201:

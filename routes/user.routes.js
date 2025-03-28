@@ -214,7 +214,7 @@ router.post("/verify-otp", userController.verifyOtp);
  *                     role:
  *                       type: string
  *                       example: "user"
- *                     age: 
+ *                     age:
  *                       type: integer
  *       400:
  *         description: "Foydalanuvchi ro'yxatdan o'tkazilmadi"
@@ -341,9 +341,6 @@ router.post("/login", userController.loginUser);
  *                   firstName:
  *                     type: string
  *                     example: "Ali"
- *                   lastName:
- *                     type: string
- *                     example: "Valiyev"
  *                   role:
  *                     type: string
  *                     example: "Admin"
@@ -363,9 +360,150 @@ router.post("/login", userController.loginUser);
  *                   type: string
  *                   example: "Something went wrong"
  */
-router.get("/allUser", userController.getAllUser);
+router.get(
+  "/allUser",
+  authenticate,
+  authorize(["admin", "super-admin"]),
+  userController.getAllUser
+);
+/**
+ * @swagger
+ * /getUserById/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the user to retrieve
+ *     responses:
+ *       200:
+ *         description: User found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 firstName:
+ *                   type: string
+ *                   example: "Ali"
+ *                 lastName:
+ *                   type: string
+ *                   example: "Valiyev"
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   example: "example@gmail.com"
+ *                 phone:
+ *                   type: string
+ *                   format: phone
+ *                   example: "+998901234567"
+ *                 role:
+ *                   type: string
+ *                   example: "Admin"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "User not found"
+ */
+router.get("/getUserById/:id", authenticate, authorize(["admin", "super-admin"]), userController.getUserById);
+/**
+ * @swagger
+ * /allCeo:
+ *   get:
+ *     summary: Get all CEOs
+ *     description: Retrieve a list of all users with the role of "CEO". Only accessible by admins.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: The page number for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page.
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           default: createdAt
+ *         description: Field to sort by.
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: DESC
+ *         description: Sorting order (ASC for ascending, DESC for descending).
+ *       - in: query
+ *         name: firstName
+ *         schema:
+ *           type: string
+ *         description: Filter CEOs by first name.
+ *     responses:
+ *       200:
+ *         description: List of CEOs retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   firstName:
+ *                     type: string
+ *                     example: John
+ *                   lastName:
+ *                     type: string
+ *                     example: Doe
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                     example: john.doe@example.com
+ *                   role:
+ *                     type: string
+ *                     example: ceo
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *       400:
+ *         description: Bad request due to invalid parameters.
+ *       401:
+ *         description: Unauthorized, missing or invalid token.
+ *       403:
+ *         description: Forbidden, user does not have permission.
+ *       500:
+ *         description: Internal server error.
+ */
 
-router.get("/allCeo", userController.getAllCeo);
+router.get(
+  "/allCeo",
+  authenticate,
+  authorize(["admin"]),
+  userController.getAllCeo
+);
 /**
  * @swagger
  * /updateUser/{id}:
@@ -386,8 +524,6 @@ router.get("/allCeo", userController.getAllCeo);
  *             type: object
  *             properties:
  *               firstName:
- *                 type: string
- *               lastName:
  *                 type: string
  *               email:
  *                 type: string
@@ -417,9 +553,6 @@ router.get("/allCeo", userController.getAllCeo);
  *                     firstName:
  *                       type: string
  *                       example: "Firdavs"
- *                     lastName:
- *                       type: string
- *                       example: "Xolmatov"
  *                     image:
  *                       type: string
  *                       example: "example.jpg"
@@ -432,7 +565,12 @@ router.get("/allCeo", userController.getAllCeo);
  *                       format: phone
  *                       example: "+998901234567"
  */
-router.patch("/updateUser/:id", userController.updateUser);
+router.patch(
+  "/updateUser/:id",
+  authenticate,
+  authorize(["admin", "super-admin"]),
+  userController.updateUser
+);
 
 /**
  * @swagger
@@ -468,7 +606,12 @@ router.patch("/updateUser/:id", userController.updateUser);
  *                   type: string
  *                   example: "User not found"
  */
-router.delete("/deleteUser/:id", userController.deleteUser);
+router.delete(
+  "/deleteUser/:id",
+  authenticate,
+  authorize(["admin"]),
+  userController.deleteUser
+);
 
 /**
  * @swagger
@@ -490,9 +633,6 @@ router.delete("/deleteUser/:id", userController.deleteUser);
  *                 firstName:
  *                   type: string
  *                   example: "Firdavs"
- *                 lastName:
- *                   type: string
- *                   example: "Xolmatov"
  *                 email:
  *                   type: string
  *                   format: email

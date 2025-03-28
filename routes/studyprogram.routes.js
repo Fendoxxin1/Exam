@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const studyProgramController = require("../controller/studyprogram.controller");
@@ -45,29 +44,6 @@ const studyProgramController = require("../controller/studyprogram.controller");
  *     responses:
  *       200:
  *         description: A list of study programs.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: Computer Science
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                   updatedAt:
- *                     type: string
- *                     format: date-time
- *       404:
- *         description: No study programs found.
- *       500:
- *         description: Internal server error.
  */
 router.get("/studyprograms", studyProgramController.getAllStudyPrograms);
 
@@ -89,23 +65,6 @@ router.get("/studyprograms", studyProgramController.getAllStudyPrograms);
  *     responses:
  *       200:
  *         description: Study program details.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Computer Science
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
  *       404:
  *         description: Study program not found.
  *       500:
@@ -129,34 +88,25 @@ router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
  *             type: object
  *             required:
  *               - name
+ *               - image
+ *               - professionId
+ *               - subjectId
  *             properties:
  *               name:
  *                 type: string
  *                 example: Data Science
+ *               image:
+ *                 type: string
+ *                 example: "image.jpg"
+ *               professionId:
+ *                 type: integer
+ *                 example: 2
+ *               subjectId:
+ *                 type: integer
+ *                 example: 5
  *     responses:
  *       201:
  *         description: Study program successfully created.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Data Science
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
- *       400:
- *         description: Invalid input, missing required fields.
- *       500:
- *         description: Internal server error.
  */
 router.post("/studyprograms", studyProgramController.createStudyProgram);
 
@@ -185,29 +135,20 @@ router.post("/studyprograms", studyProgramController.createStudyProgram);
  *               name:
  *                 type: string
  *                 example: Updated Data Science Program
+ *               image:
+ *                 type: string
+ *                 example: "image.jpg"
+ *               professionId:
+ *                 type: integer
+ *                 example: 1
+ *               subjectId:
+ *                 type: integer
+ *                 example: 1
  *     responses:
  *       200:
  *         description: Study program successfully updated.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Updated Data Science Program
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
- *       400:
- *         description: Invalid input or missing required fields.
  *       404:
  *         description: Study program not found.
- *       500:
- *         description: Internal server error.
  */
 router.patch("/studyprograms/:id", studyProgramController.updateStudyProgram);
 
@@ -229,18 +170,8 @@ router.patch("/studyprograms/:id", studyProgramController.updateStudyProgram);
  *     responses:
  *       200:
  *         description: Study program successfully deleted.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Study program deleted successfully.
  *       404:
  *         description: Study program not found.
- *       500:
- *         description: Internal server error.
  */
 router.delete("/studyprograms/:id", studyProgramController.deleteStudyProgram);
 
