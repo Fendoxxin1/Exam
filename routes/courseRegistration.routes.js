@@ -1,15 +1,15 @@
 const express = require("express");
 const { body } = require("express-validator");
-const userEnrolmentController = require("../controller/userEnrolment.controller");
+const CourseRegistration = require("../controller/userEnrolment.controller");
 
 const router = express.Router();
 
-/** 
- * @swagger 
+/**
+ * @swagger
  * tags:
  *   - name: User Enrolments
  *     description: Operations related to user enrolments
- * 
+ *
  * /userenrolments:
  *   post:
  *     tags:
@@ -33,17 +33,17 @@ const router = express.Router();
  *         description: User enrolment created
  */
 router.post(
-    "/",
-    [
-        body("userId").isInt().withMessage("UserId must be an integer"),
-        body("learningId").isInt().withMessage("LearningId must be an integer"),
-        body("filialId").isInt().withMessage("FilialId must be an integer"),
-    ],
-    userEnrolmentController.createUserEnrolment
+  "/",
+  [
+    body("userId").isInt().withMessage("UserId must be an integer"),
+    body("learningId").isInt().withMessage("LearningId must be an integer"),
+    body("filialId").isInt().withMessage("FilialId must be an integer"),
+  ],
+  CourseRegistration.createUserEnrolment
 );
 
-/** 
- * @swagger 
+/**
+ * @swagger
  * /userenrolments/{id}:
  *   delete:
  *     tags:
@@ -60,9 +60,6 @@ router.post(
  *       200:
  *         description: User enrolment deleted
  */
-router.delete(
-    "/:id",
-    userEnrolmentController.deleteUserEnrolment
-);
+router.delete("/:id", CourseRegistration.deleteUserEnrolment);
 
 module.exports = router;

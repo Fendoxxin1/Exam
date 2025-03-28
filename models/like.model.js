@@ -17,7 +17,11 @@ const Like = db.define("Like", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
+<<<<<<< HEAD
       model: "EducationalCenters",
+=======
+      model: "EducationalCenter",
+>>>>>>> d556bc41bec362b9e77a9fc534c4940b80453abe
       key: "id",
     },
     onUpdate: "CASCADE",
