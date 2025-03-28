@@ -145,7 +145,7 @@ router.get("/professions/:id", professionController.getProfessionById);
  *             properties:
  *               name:
  *                 type: string
- *               img:
+ *               image:
  *                 type: string
  *                 nullable: true
  *     responses:

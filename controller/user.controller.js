@@ -71,11 +71,13 @@ const loginUser = async (req, res) => {
     if (!isPasswordValid) return res.status(403).json({ error: "Parol xato" });
     const accessToken = jwt.sign(
       { id: user.id, role: user.role, email: user.email },
-      "sirlisoz"
+      "sirlisoz",
+      { expiresIn: "1h" }
     );
     const refreshToken = jwt.sign(
       { id: user.id, role: user.role, email: user.email },
-      "refresh"
+      "refresh",
+      { expiresIn: "7d" }
     );
     res.status(200).json({ accessToken, refreshToken });
   } catch (error) {
@@ -83,7 +85,7 @@ const loginUser = async (req, res) => {
   }
 };
 const registerUser = async (req, res) => {
-  const { firstName, password, email, phone, lastName, image } = req.body;
+  const { firstName, password, email, phone, lastName, image, ...rest } = req.body;
   try {
     if (!isValidEmail(email))
       return res.status(403).json({ error: "Noto'g'ri email" });
@@ -101,6 +103,7 @@ const registerUser = async (req, res) => {
       phone,
       lastName,
       image,
+      ...rest,
     });
 
     res.status(201).json({ message: "User successfully registered", user });

@@ -14,9 +14,9 @@ const studyProgramRoutes = require("./routes/studyprogram.routes");
 const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
-const LcMajors = require("./models/lcmajors.model");
-const Subject = require("./models/subject.model");
-// const logger = require("./middleware/logger"); 
+const LcMajors = require("./routes/lcMajors.routes");
+const Subject = require("./routes/subject.routes");
+// const logger = require("./middleware/logger");
 
 const app = express();
 app.use(express.json());

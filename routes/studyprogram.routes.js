@@ -129,10 +129,22 @@ router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
  *             type: object
  *             required:
  *               - name
+ *               - image
+ *               - professionId
+ *               - subjectId
  *             properties:
  *               name:
  *                 type: string
  *                 example: Data Science
+ *               image:
+ *                 type: string
+ *                 example: "https://example.com/image.jpg"
+ *               professionId:
+ *                 type: integer
+ *                 example: 2
+ *               subjectId:
+ *                 type: integer
+ *                 example: 5
  *     responses:
  *       201:
  *         description: Study program successfully created.
@@ -147,6 +159,15 @@ router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
  *                 name:
  *                   type: string
  *                   example: Data Science
+ *                 image:
+ *                   type: string
+ *                   example: "https://example.com/image.jpg"
+ *                 professionId:
+ *                   type: integer
+ *                   example: 2
+ *                 subjectId:
+ *                   type: integer
+ *                   example: 5
  *                 createdAt:
  *                   type: string
  *                   format: date-time
@@ -158,6 +179,7 @@ router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
  *       500:
  *         description: Internal server error.
  */
+
 router.post("/studyprograms", studyProgramController.createStudyProgram);
 
 /**
@@ -185,6 +207,15 @@ router.post("/studyprograms", studyProgramController.createStudyProgram);
  *               name:
  *                 type: string
  *                 example: Updated Data Science Program
+ *               image:
+ *                 type: string
+ *                 example: "https://example.com/new-image.jpg"
+ *               professionId:
+ *                 type: integer
+ *                 example: 3
+ *               subjectId:
+ *                 type: integer
+ *                 example: 7
  *     responses:
  *       200:
  *         description: Study program successfully updated.
@@ -199,6 +230,15 @@ router.post("/studyprograms", studyProgramController.createStudyProgram);
  *                 name:
  *                   type: string
  *                   example: Updated Data Science Program
+ *                 image:
+ *                   type: string
+ *                   example: "https://example.com/new-image.jpg"
+ *                 professionId:
+ *                   type: integer
+ *                   example: 3
+ *                 subjectId:
+ *                   type: integer
+ *                   example: 7
  *                 updatedAt:
  *                   type: string
  *                   format: date-time
@@ -209,6 +249,7 @@ router.post("/studyprograms", studyProgramController.createStudyProgram);
  *       500:
  *         description: Internal server error.
  */
+
 router.patch("/studyprograms/:id", studyProgramController.updateStudyProgram);
 
 /**
