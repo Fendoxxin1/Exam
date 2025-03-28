@@ -1,10 +1,21 @@
 const bcrypt = require("bcrypt");
 const { totp, authenticator } = require("otplib");
-const { User } = require("../models/association.model");
+const {
+  User,
+  Region,
+  Resource,
+  Comment,
+  Like,
+} = require("../models/association.model");
 const sendSMS = require("../config/sendSMS");
 const { sendEmail } = require("../config/sendEMAIL");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const {
+  registerUserSchema,
+  updateUserSchema,
+} = require("../validation/user.validation");
+const EducationalCenter = require("../models/educationalcenter.model");
 totp.options = { step: 120 };
 authenticator.options = { step: 120 };
 
@@ -85,8 +96,15 @@ const loginUser = async (req, res) => {
   }
 };
 const registerUser = async (req, res) => {
-  const { firstName, password, email, phone, lastName, image, ...rest } = req.body;
+  const { firstName, password, email, phone, lastName, image, ...rest } =
+    req.body;
   try {
+    const { error } = registerUserSchema.validate(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "validation error", error: error.details[0].message });
+    }
     if (!isValidEmail(email))
       return res.status(403).json({ error: "Noto'g'ri email" });
     if (!isValidPhone(phone))
@@ -132,12 +150,44 @@ const getAllUser = async (req, res) => {
       limit: parseInt(limit),
       offset: (parseInt(page) - 1) * parseInt(limit),
       order: [[sort, order]],
+      include: [
+        { model: Region, as: "Region" },
+        {
+          model: EducationalCenter,
+          as: "EducationalCenters",
+          through: { attributes: [] },
+        },
+        { model: Resource, as: "Resources" },
+        { model: Comment, as: "Comments" },
+      ],
     });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id, {
+      include: [
+        { model: Region, as: "Region" },
+        {
+          model: EducationalCenter,
+          as: "EducationalCenters",
+          through: { attributes: [] },
+        },
+        { model: Resource, as: "Resources" },
+        { model: Comment, as: "Comments" },
+      ],
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getAllCeo = async (req, res) => {
   try {
     const {
@@ -164,6 +214,11 @@ const getAllCeo = async (req, res) => {
 };
 const updateUser = async (req, res) => {
   try {
+    const { error } = updateUserSchema.validate(req.body);
+    if (error)
+      return res
+        .status(400)
+        .json({ message: "validation error", error: error.details[0].message });
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ error: "User topilmadi" });
 
@@ -241,4 +296,5 @@ module.exports = {
   refreshToken,
   getAllUser,
   getAllCeo,
+  getUserById,
 };

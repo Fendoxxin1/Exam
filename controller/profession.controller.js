@@ -1,9 +1,16 @@
 const { Op } = require("sequelize");
-const { Profession } = require("../models/association.model");
+const { Profession, StudyProgram } = require("../models/association.model");
 
 const getProfessions = async (req, res) => {
   try {
-    const professions = await Profession.findAll();
+    const professions = await Profession.findAll({
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
+    });
     res.json(professions);
   } catch (error) {
     res.status(500).json({
@@ -28,10 +35,20 @@ const getProfessionById = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid ID format" });
     }
+    const professions = await Profession.findAll({
+      where: whereCondition,
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      order: [[sort, order]],
 
-    const profession = await Profession.findByPk(id);
-
-    if (!profession) {
+      include: [
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+        },
+      ],
+    });
+    if (!professions) {
       return res.status(404).json({ message: "Profession not found" });
     }
 

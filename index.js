@@ -54,7 +54,7 @@ const swaggerOptions = {
   apis: ["./routes/*.js"],
 };
 
-// app.use(logger);
+app.use(logger);
 app.use("/api", userRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/likes", likeRoutes);

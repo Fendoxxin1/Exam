@@ -4,6 +4,9 @@ const {
   createEducationalCenterSchema,
   updateEducationalCenterSchema,
 } = require("../validation/educationalcenter.validation");
+const StudyProgram = require("../models/studyprogram.model");
+const Filial = require("../models/filial.model");
+const User = require("../models/user.model");
 
 const getAllEducationalCenters = async (req, res) => {
   try {
@@ -21,6 +24,16 @@ const getAllEducationalCenters = async (req, res) => {
       where: filters,
       limit,
       offset,
+      include: [
+        { model: Filial, as: "Branches" },
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+          through: { attributes: [] },
+        },
+        { model: Comment, as: "Comments" },
+        { model: User, as: "Users", through: { attributes: [] } },
+      ],
     });
 
     res.json({
@@ -36,7 +49,18 @@ const getAllEducationalCenters = async (req, res) => {
 
 const getEducationalCenterById = async (req, res) => {
   try {
-    const center = await EducationalCenter.findByPk(req.params.id);
+    const center = await EducationalCenter.findByPk(req.params.id, {
+      include: [
+        { model: Branch, as: "Branches" },
+        {
+          model: StudyProgram,
+          as: "StudyPrograms",
+          through: { attributes: [] },
+        },
+        { model: Comment, as: "Comments" },
+        { model: User, as: "Users", through: { attributes: [] } },
+      ],
+    });
     if (!center) return res.status(404).json({ message: "Not found" });
     res.json(center);
   } catch (error) {

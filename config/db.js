@@ -16,6 +16,12 @@ const db = new Sequelize("n17", "root", "Odil5060", {
 // const db = new Sequelize("exam3", "root", "billybutcher1", {
 //   host: "localhost",
 //   dialect: "mysql",
+//   logging:false
+// });
+
+// const db = new Sequelize("exam3", "root", "billybutcher1", {
+//   host: "localhost",
+//   dialect: "mysql",
 // });
 
 async function connectDb() {

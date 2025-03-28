@@ -8,7 +8,7 @@ const subjectSchema = Joi.object({
     "string.max": "Name must be less than 255 characters",
     "any.required": "Name is required",
   }),
-  image: Joi.string().uri().optional().messages({
+  image: Joi.string().uri().optional().required().messages({
     "string.uri": "Image must be a valid URL",
   }),
 });
@@ -19,7 +19,7 @@ const updateSubjectSchema = Joi.object({
     "string.min": "Name must be at least 3 characters long",
     "string.max": "Name must be less than 255 characters",
   }),
-  image: Joi.string().uri().optional().messages({
+  image: Joi.string().uri().optional().required().messages({
     "string.uri": "Image must be a valid URL",
   }),
 });
