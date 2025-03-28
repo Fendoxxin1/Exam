@@ -17,8 +17,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const Subject = require("./routes/subject.routes");
 const uploads = require("./routes/uploads.routes");
 const path = require("path");
+const sessionRoutes = require("./routes/session.routes");
 const logger = require("./middleware/logger");
-
 
 const app = express();
 app.use(express.json());
@@ -68,8 +68,8 @@ app.use("/api", learningCenter);
 app.use("/api", educenterprogramRoutes);
 app.use("/api", Subject);
 app.use("/api/", uploads);
+app.use("/api", sessionRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 connectDb();
 

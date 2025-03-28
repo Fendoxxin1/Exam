@@ -10,6 +10,8 @@ const {
 const sendSMS = require("../config/sendSMS");
 const { sendEmail } = require("../config/sendEMAIL");
 const jwt = require("jsonwebtoken");
+
+const Session = require("../models/session.model");
 const { Op } = require("sequelize");
 const {
   registerUserSchema,
@@ -73,13 +75,20 @@ const verifyOtp = async (req, res) => {
     res.status(400).json({ message: "Noto'g'ri ma'lumot yuborildi" });
   }
 };
+
 const loginUser = async (req, res) => {
-  const { phone, password } = req.body;
   try {
+    const { phone, password } = req.body;
     const user = await User.findOne({ where: { phone } });
+
     if (!user) return res.status(404).json({ error: "User topilmadi" });
+
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) return res.status(403).json({ error: "Parol xato" });
+
+    const userAgent = req.headers["user-agent"] || "Unknown Device";
+    const ipAddress = req.ip;
+
     const accessToken = jwt.sign(
       { id: user.id, role: user.role, email: user.email },
       "sirlisoz",
@@ -90,11 +99,26 @@ const loginUser = async (req, res) => {
       "refresh",
       { expiresIn: "7d" }
     );
-    res.status(200).json({ accessToken, refreshToken });
+
+    const session = await Session.create({
+      user_id: user.id,
+      token: accessToken,
+      device: userAgent,
+      ip_address: ipAddress,
+    });
+
+    res.status(200).json({
+      message: "Login muvaffaqiyatli",
+      accessToken,
+      refreshToken,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ error: "Ichki server xatosi", details: error.message });
   }
 };
+
 const registerUser = async (req, res) => {
   const { firstName, password, email, phone, lastName, image, ...rest } =
     req.body;
@@ -223,7 +247,7 @@ const updateUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User topilmadi" });
 
     const { password, ...rest } = req.body;
-    
+
     // Agar password bo'lsa, xesh qilamiz
     let hashedPassword = user.password;
     if (password) {
@@ -240,7 +264,6 @@ const updateUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const deleteUser = async (req, res) => {
   try {
@@ -284,6 +307,25 @@ const refreshToken = async (req, res) => {
   }
 };
 
+const addAdmin = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { phone: req.body.phone } });
+    if (user) return res.send("User already exists");
+    const { error } = registerUserSchema.validate(req.body);
+    if (error)
+      return res
+        .status(400)
+        .json({ message: "validation error", error: error.details[0].message });
+    if (!req.body.role == "admin" || !req.body.role == "super-admin") {
+      return res.send("role admin or super admin bo'lishi kerak");
+    }
+    const admin = await User.create(req.body);
+    res.status(200).send(admin);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   sendOtpSMS,
   sendOtpEmail,
@@ -297,4 +339,5 @@ module.exports = {
   getAllUser,
   getAllCeo,
   getUserById,
+  addAdmin,
 };

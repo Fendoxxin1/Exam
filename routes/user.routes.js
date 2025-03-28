@@ -169,7 +169,7 @@ router.post("/verify-otp", userController.verifyOtp);
  *                 example: "123456"
  *               image:
  *                 type: string
- *                 example: "example.jpg"
+ *                 example: "https://example.jpg"
  *               phone:
  *                 type: string
  *                 format: phone
@@ -177,6 +177,9 @@ router.post("/verify-otp", userController.verifyOtp);
  *               role:
  *                 type: string
  *                 example: "user"
+ *               year:
+ *                 type: integer
+ *                 example: 2000
  *     responses:
  *       201:
  *         description: Yangi foydalanuvchi yaratildi
@@ -214,8 +217,9 @@ router.post("/verify-otp", userController.verifyOtp);
  *                     role:
  *                       type: string
  *                       example: "user"
- *                     age:
+ *                     year:
  *                       type: integer
+ *                       example: 2000
  *       400:
  *         description: "Foydalanuvchi ro'yxatdan o'tkazilmadi"
  *         content:
@@ -228,6 +232,98 @@ router.post("/verify-otp", userController.verifyOtp);
  *                   example: "User already exists"
  */
 router.post("/register", userController.registerUser);
+
+/**
+ * @swagger
+ * /addAdmin:
+ *   post:
+ *     summary: Yangi admin qo'shish
+ *     tags: [Add admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: "Firdavs"
+ *               lastName:
+ *                 type: string
+ *                 example: "Xolmatov"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "example@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "123456"
+ *               image:
+ *                 type: string
+ *                 example: "https://example.jpg"
+ *               phone:
+ *                 type: string
+ *                 format: phone
+ *                 example: "+998901234567"
+ *               role:
+ *                 type: string
+ *                 example: "admin"
+ *               year:
+ *                 type: integer
+ *                 example: 2000
+ *     responses:
+ *       201:
+ *         description: Yangi admin qo'shildi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Admin successfully registered"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     firstName:
+ *                       type: string
+ *                       example: "Firdavs"
+ *                     lastName:
+ *                       type: string
+ *                       example: "Xolmatov"
+ *                     image:
+ *                       type: string
+ *                       example: "example.jpg"
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: "example@gmail.com"
+ *                     phone:
+ *                       type: string
+ *                       format: phone
+ *                       example: "+998901234567"
+ *                     role:
+ *                       type: string
+ *                       example: "admin"
+ *                     year:
+ *                       type: integer
+ *                       example: 2000
+ *       400:
+ *         description: "Admin ro'yxatdan o'tkazilmadi"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Admin already exists"
+ */
+router.post("/addAdmin",userController.addAdmin)
 
 /**
  * @swagger

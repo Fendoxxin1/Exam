@@ -44,8 +44,12 @@ const User = db.define("User", {
       notEmpty: true,
     },
   },
+  year: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   role: {
-    type: DataTypes.ENUM("admin", "super-admin", "ceo", "user"),
+    type: DataTypes.ENUM("admin", "super-admin", "ceo", "user"), 
   },
 });
 

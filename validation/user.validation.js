@@ -1,5 +1,7 @@
 const Joi = require("joi");
 
+const currentYear = new Date().getFullYear();
+
 const registerUserSchema = Joi.object({
   firstName: Joi.string().min(2).max(50).required().messages({
     "string.base": "First name must be a string",
@@ -11,7 +13,8 @@ const registerUserSchema = Joi.object({
   lastName: Joi.string().min(2).max(50).required().messages({
     "string.base": "Last name must be a string",
     "string.empty": "Last name is required",
-    "string.min": "Last name must be at least 2 characters long",
+    "string.min":
+      "Last name must bddddddddddddddddddddde at least 2 characters long",
     "string.max": "Last name must be less than 50 characters",
     "any.required": "Last name is required",
   }),
@@ -42,6 +45,16 @@ const registerUserSchema = Joi.object({
     "string.empty": "Role is required",
     "any.required": "Role is required",
   }),
+  year: Joi.number()
+    .integer()
+    .max(currentYear - 18)
+    .required()
+    .messages({
+      "number.base": "Year must be a number",
+      "number.integer": "Year must be an integer",
+      "number.max": "User must be at least 18 years old",
+      "any.required": "Year is required",
+    }),
 });
 
 const updateUserSchema = Joi.object({
