@@ -25,13 +25,13 @@ const getAllEducationalCenters = async (req, res) => {
       limit,
       offset,
       include: [
-        { model: Filial, as: "Branches" },
+        { model: Filial, },
         {
           model: StudyProgram,
           as: "StudyPrograms",
           through: { attributes: [] },
         },
-        { model: Comment, as: "Comments" },
+        { model: Comment,  },
         { model: User, as: "Users", through: { attributes: [] } },
       ],
     });
@@ -51,13 +51,13 @@ const getEducationalCenterById = async (req, res) => {
   try {
     const center = await EducationalCenter.findByPk(req.params.id, {
       include: [
-        { model: Branch, as: "Branches" },
+        { model: Filial, },
         {
           model: StudyProgram,
           as: "StudyPrograms",
           through: { attributes: [] },
         },
-        { model: Comment, as: "Comments" },
+        { model: Comment,  },
         { model: User, as: "Users", through: { attributes: [] } },
       ],
     });

@@ -1,4 +1,4 @@
-// validations/filial.validation.js
+
 const Joi = require("joi");
 
 const createFilialSchema = Joi.object({

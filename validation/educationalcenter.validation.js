@@ -1,4 +1,4 @@
-// validations/educationalcenter.validation.js
+
 const Joi = require("joi");
 
 const createEducationalCenterSchema = Joi.object({

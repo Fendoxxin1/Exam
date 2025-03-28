@@ -17,7 +17,6 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const Subject = require("./routes/subject.routes");
 const uploads = require("./routes/uploads.routes");
 const path = require("path");
-
 const logger = require("./middleware/logger");
 
 
