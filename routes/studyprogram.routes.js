@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role")
 const studyProgramController = require("../controller/studyprogram.controller");
 
 /**
@@ -45,7 +47,7 @@ const studyProgramController = require("../controller/studyprogram.controller");
  *       200:
  *         description: A list of study programs.
  */
-router.get("/studyprograms", studyProgramController.getAllStudyPrograms);
+router.get("/studyprograms",authenticate, studyProgramController.getAllStudyPrograms);
 
 /**
  * @swagger
@@ -70,7 +72,7 @@ router.get("/studyprograms", studyProgramController.getAllStudyPrograms);
  *       500:
  *         description: Internal server error.
  */
-router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
+router.get("/studyprograms/:id",authenticate, studyProgramController.getStudyProgramById);
 
 /**
  * @swagger
@@ -108,7 +110,7 @@ router.get("/studyprograms/:id", studyProgramController.getStudyProgramById);
  *       201:
  *         description: Study program successfully created.
  */
-router.post("/studyprograms", studyProgramController.createStudyProgram);
+router.post("/studyprograms",authenticate,authorize(["admin","ceo"]), studyProgramController.createStudyProgram);
 
 /**
  * @swagger
@@ -150,7 +152,7 @@ router.post("/studyprograms", studyProgramController.createStudyProgram);
  *       404:
  *         description: Study program not found.
  */
-router.patch("/studyprograms/:id", studyProgramController.updateStudyProgram);
+router.patch("/studyprograms/:id",authenticate,authorize(["admin","ceo","super admin"]), studyProgramController.updateStudyProgram);
 
 /**
  * @swagger
@@ -173,6 +175,6 @@ router.patch("/studyprograms/:id", studyProgramController.updateStudyProgram);
  *       404:
  *         description: Study program not found.
  */
-router.delete("/studyprograms/:id", studyProgramController.deleteStudyProgram);
+router.delete("/studyprograms/:id",authenticate,authorize(["admin","ceo"]), studyProgramController.deleteStudyProgram);
 
 module.exports = router;

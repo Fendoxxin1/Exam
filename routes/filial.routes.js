@@ -1,6 +1,8 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const Filial = require("../models/filial.model");
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role")
 const EducationalCenter = require("../models/educationalcenter.model"); 
 const {
   createFilialSchema,
@@ -145,7 +147,7 @@ router.get("/filials/:id", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-router.post("/filials", async (req, res) => {
+router.post("/filials", authenticate,authorize(["admin","ceo"]), async (req, res) => {
   try {
     const { error } = createFilialSchema.validate(req.body);
     if (error) {
@@ -223,7 +225,7 @@ router.post("/filials", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-router.patch("/filials/:id", async (req, res) => {
+router.patch("/filials/:id", authenticate,authorize(["admin","ceo","super admin"]), async (req, res) => {
   try {
     const { error } = updateFilialSchema.validate(req.body);
     if (error) {
@@ -268,7 +270,7 @@ router.patch("/filials/:id", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-router.delete("/filials/:id", async (req, res) => {
+router.delete("/filials/:id",authenticate,authorize(["admin","ceo"]), async (req, res) => {
   try {
     const filial = await Filial.findByPk(req.params.id);
     if (!filial) return res.status(404).json({ error: "Filial topilmadi" });

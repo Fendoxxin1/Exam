@@ -89,8 +89,7 @@ router.get("/subjects", subjectController.getSubjects);
  *         description: Subject found
  *         content:
  *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Subject'
+ *       
  *       404:
  *         description: Subject not found
  */
@@ -120,8 +119,8 @@ router.get("/subject/:id", subjectController.getSubjectById);
  */
 router.post(
   "/subjects",
-  // authenticate,
-  // authorize(["admin"]),
+  authenticate,
+  authorize(["admin"]),
   subjectController.createSubject
 );
 

@@ -1,3 +1,4 @@
+
 const EducationalCenter = require("../models/educationalcenter.model");
 const { Op } = require("sequelize");
 const {
@@ -25,23 +26,46 @@ const getAllEducationalCenters = async (req, res) => {
       where: filters,
       limit,
       offset,
-      include: [
-        { model: Filial },
-        {
-          model: StudyProgram,
-          as: "StudyPrograms",
-          through: { attributes: [] },
-        },
-        { model: Comment,  },
-        { model: User, as: "Users", through: { attributes: [] } },
-      ],
     });
+
+    const result = await Promise.all(
+      centers.rows.map(async (center) => {
+        const filial = await Filial.findAll({
+          where: { educationalCenterId: center.id },
+        });
+        const studyPrograms = await StudyProgram.findAll({
+          include: {
+            model: EducationalCenter,
+            where: { id: center.id },
+            through: { attributes: [] },
+          },
+        });
+        const comments = await Comment.findAll({
+          where: { educationalCenterId: center.id },
+        });
+        const users = await User.findAll({
+          include: {
+            model: EducationalCenter,
+            where: { id: center.id },
+            through: { attributes: [] },
+          },
+        });
+
+        return {
+          ...center.toJSON(),
+          filial,
+          studyPrograms,
+          comments,
+          users,
+        };
+      })
+    );
 
     res.json({
       total: centers.count,
       page: parseInt(page),
       take: limit,
-      data: centers.rows,
+      data: result,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -50,20 +74,39 @@ const getAllEducationalCenters = async (req, res) => {
 
 const getEducationalCenterById = async (req, res) => {
   try {
-    const center = await EducationalCenter.findByPk(req.params.id, {
-      include: [
-        { model: Filial},
-        {
-          model: StudyProgram,
-          as: "StudyPrograms",
-          through: { attributes: [] },
-        },
-        { model: Comment,  },
-        { model: User, as: "Users", through: { attributes: [] } },
-      ],
-    });
+    const center = await EducationalCenter.findByPk(req.params.id);
     if (!center) return res.status(404).json({ message: "Not found" });
-    res.json(center);
+
+    const filial = await Filial.findAll({
+      where: { educationalCenterId: center.id },
+    });
+    const studyPrograms = await StudyProgram.findAll({
+      include: {
+        model: EducationalCenter,
+        where: { id: center.id },
+        through: { attributes: [] },
+      },
+    });
+    const comments = await Comment.findAll({
+      where: { educationalCenterId: center.id },
+    });
+    const users = await User.findAll({
+      include: {
+        model: EducationalCenter,
+        where: { id: center.id },
+        through: { attributes: [] },
+      },
+    });
+
+    const result = {
+      ...center.toJSON(),
+      filial,
+      studyPrograms,
+      comments,
+      users,
+    };
+
+    res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -71,7 +114,6 @@ const getEducationalCenterById = async (req, res) => {
 
 const createEducationalCenter = async (req, res) => {
   try {
-    
     const { error } = createEducationalCenterSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -95,7 +137,6 @@ const createEducationalCenter = async (req, res) => {
 
 const updateEducationalCenter = async (req, res) => {
   try {
-  
     const { error } = updateEducationalCenterSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
