@@ -1,5 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role")
 const CourseRegistration = require("../controller/userEnrolment.controller");
 
 const router = express.Router();
@@ -38,7 +40,7 @@ router.post(
     body("userId").isInt().withMessage("UserId must be an integer"),
     body("learningId").isInt().withMessage("LearningId must be an integer"),
     body("filialId").isInt().withMessage("FilialId must be an integer"),
-  ],
+  ],authenticate,
   CourseRegistration.createUserEnrolment
 );
 
@@ -60,6 +62,6 @@ router.post(
  *       200:
  *         description: User enrolment deleted
  */
-router.delete("/:id", CourseRegistration.deleteUserEnrolment);
+router.delete("/:id",authenticate, CourseRegistration.deleteUserEnrolment);
 
 module.exports = router;

@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role")
 const controller = require("../controller/educationalCenter.controller");
 
 /**
@@ -75,7 +77,7 @@ router.get("/educationalcenter", controller.getAllEducationalCenters);
  *       201:
  *         description: Educational center created successfully
  */
-router.post("/educationalcenter", controller.createEducationalCenter);
+router.post("/educationalcenter",authenticate,authorize(["admin","ceo",]), controller.createEducationalCenter);
 
 /**
  * @swagger
@@ -130,7 +132,7 @@ router.get("/educationalcenter/:id", controller.getEducationalCenterById);
  *       200:
  *         description: Educational center updated successfully
  */
-router.patch("/educationalcenter/:id", controller.updateEducationalCenter);
+router.patch("/educationalcenter/:id",authenticate,authorize(["admin","ceo","super admin"]), controller.updateEducationalCenter);
 
 /**
  * @swagger
@@ -149,6 +151,6 @@ router.patch("/educationalcenter/:id", controller.updateEducationalCenter);
  *       200:
  *         description: Educational center deleted successfully
  */
-router.delete("/educationalcenter/:id", controller.deleteEducationalCenter);
+router.delete("/educationalcenter/:id",authenticate,authorize(["admin","ceo"]), controller.deleteEducationalCenter);
 
 module.exports = router;

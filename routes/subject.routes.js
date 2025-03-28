@@ -119,8 +119,8 @@ router.get("/subject/:id", subjectController.getSubjectById);
  */
 router.post(
   "/subjects",
-  // authenticate,
-  // authorize(["admin"]),
+  authenticate,
+  authorize(["admin"]),
   subjectController.createSubject
 );
 

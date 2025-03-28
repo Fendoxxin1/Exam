@@ -1,7 +1,9 @@
 const express = require("express");
 const EducenterProgram = require("../models/educenterprogram.model");
 const EducationalCenter = require("../models/educationalcenter.model"); 
-const StudyProgram = require("../models/studyprogram.model"); 
+const StudyProgram = require("../models/studyprogram.model");
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role") 
 const { Op } = require("sequelize");
 const { createEducenterProgramSchema } = require("../validation/educenterprogram.validation");
 
@@ -150,7 +152,7 @@ router.get("/educenterprogram/:id", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-router.post("/educenterprogram", async (req, res) => {
+router.post("/educenterprogram",authenticate,authorize(["admin","ceo"]), async (req, res) => {
   try {
     const { error } = createEducenterProgramSchema.validate(req.body);
     if (error) {
@@ -202,7 +204,7 @@ router.post("/educenterprogram", async (req, res) => {
  *       500:
  *         description: Server xatosi
  */
-router.delete("/educenterprogram/:id", async (req, res) => {
+router.delete("/educenterprogram/:id",authenticate,authorize(["admin","ceo"]), async (req, res) => {
   try {
     const educenterprogram = await EducenterProgram.findByPk(req.params.id);
     if (!educenterprogram)

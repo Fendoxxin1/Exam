@@ -2,6 +2,8 @@ const express = require("express");
 const ExcelJS = require("exceljs");
 const path = require("path");
 const fs = require("fs");
+const authenticate=require("../middleware/auth")
+const {authorize} = require("../middleware/role")
 const { User } = require("../models/association.model");
 
 const router = express.Router();
@@ -33,7 +35,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get("/export-users", async (req, res) => {
+router.get("/export-users",authenticate,authorize(["admin"]), async (req, res) => {
   try {
     const users = await User.findAll({ raw: true });
 

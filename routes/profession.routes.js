@@ -96,8 +96,8 @@ router.get("/professions", professionController.getProfessions);
  */
 router.post(
   "/professions",
-  // authenticate,
-  // authorize(["admin"]),
+  authenticate,
+  authorize(["admin"]),
   professionController.createProfession
 );
 /**
