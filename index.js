@@ -9,13 +9,15 @@ const userRoutes = require("./routes/user.routes");
 const ProfessionRoutes = require("./routes/profession.routes");
 const learningCenter = require("./routes/educationalcenter.routes");
 const FilialRoutes = require("./routes/filial.routes");
-const lcMajorsRoutes = require("./routes/lcMajors.routes");
+const educenterprogramRoutes = require("./routes/educenterprogram.routes");
 const studyProgramRoutes = require("./routes/studyprogram.routes");
 const { connectDb, db } = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
-const LcMajors = require("./routes/lcMajors.routes");
 const Subject = require("./routes/subject.routes");
+const uploads = require("./routes/uploads.routes");
+const path = require("path");
+
 // const logger = require("./middleware/logger");
 
 const app = express();
@@ -59,12 +61,15 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/regions", regionRoutes);
-app.use("/api/filials", FilialRoutes);
+app.use("/api", FilialRoutes);
 app.use("/api", ProfessionRoutes);
 app.use("/api", studyProgramRoutes);
 app.use("/api", learningCenter);
-app.use("/api", lcMajorsRoutes);
+app.use("/api", educenterprogramRoutes);
 app.use("/api", Subject);
+app.use("/api/", uploads);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 connectDb();
 

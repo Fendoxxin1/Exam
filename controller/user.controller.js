@@ -166,18 +166,26 @@ const updateUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ error: "User topilmadi" });
-    const { ...rest } = user.dataValues;
-    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+    const { password, ...rest } = req.body;
+    
+    // Agar password bo'lsa, xesh qilamiz
+    let hashedPassword = user.password;
+    if (password) {
+      hashedPassword = bcrypt.hashSync(password, 10);
+    }
+
     await user.update({
       ...rest,
       password: hashedPassword,
-      ...req.body,
     });
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const deleteUser = async (req, res) => {
   try {

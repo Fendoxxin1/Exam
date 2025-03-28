@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const controller = require("../controller/educationalcenter.controller");
+const controller = require("../controller/educationalCenter.controller");
 
 /**
  * @swagger
@@ -25,7 +25,7 @@ const controller = require("../controller/educationalcenter.controller");
  *         name: regionId
  *         schema:
  *           type: integer
- *         description: Filter by region ID
+ *         description: Filter by regionId 
  *       - in: query
  *         name: createdBy
  *         schema:
@@ -65,12 +65,10 @@ router.get("/educationalcenter", controller.getAllEducationalCenters);
  *                 type: string
  *               image:
  *                 type: string
- *               region:
+ *               regionId:
  *                 type: integer
  *               address:
  *                 type: string
- *               filialNumber:
- *                 type: integer
  *               phoneNumber:
  *                 type: string
  *     responses:
@@ -122,12 +120,10 @@ router.get("/educationalcenter/:id", controller.getEducationalCenterById);
  *                 type: string
  *               image:
  *                 type: string
- *               region:
+ *               regionId:
  *                 type: integer
  *               address:
  *                 type: string
- *               filialNumber:
- *                 type: integer
  *               phoneNumber:
  *                 type: string
  *     responses:

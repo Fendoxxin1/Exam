@@ -1,3 +1,4 @@
+const { error } = require("winston");
 const { Resource } = require("../models/association.model");
 
 exports.getResources = async (req, res) => {
@@ -25,7 +26,6 @@ exports.getResources = async (req, res) => {
   }
 };
 
-// ✅ getResourceById qo‘shildi
 exports.getResourceById = async (req, res) => {
   try {
     const { id } = req.params;

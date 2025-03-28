@@ -341,9 +341,6 @@ router.post("/login", userController.loginUser);
  *                   firstName:
  *                     type: string
  *                     example: "Ali"
- *                   lastName:
- *                     type: string
- *                     example: "Valiyev"
  *                   role:
  *                     type: string
  *                     example: "Admin"
@@ -387,8 +384,6 @@ router.get("/allCeo", userController.getAllCeo);
  *             properties:
  *               firstName:
  *                 type: string
- *               lastName:
- *                 type: string
  *               email:
  *                 type: string
  *                 format: email
@@ -417,9 +412,6 @@ router.get("/allCeo", userController.getAllCeo);
  *                     firstName:
  *                       type: string
  *                       example: "Firdavs"
- *                     lastName:
- *                       type: string
- *                       example: "Xolmatov"
  *                     image:
  *                       type: string
  *                       example: "example.jpg"
@@ -490,9 +482,6 @@ router.delete("/deleteUser/:id", userController.deleteUser);
  *                 firstName:
  *                   type: string
  *                   example: "Firdavs"
- *                 lastName:
- *                   type: string
- *                   example: "Xolmatov"
  *                 email:
  *                   type: string
  *                   format: email

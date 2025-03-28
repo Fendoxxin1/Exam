@@ -1,5 +1,9 @@
 const EducationalCenter = require("../models/educationalcenter.model");
 const { Op } = require("sequelize");
+const {
+  createEducationalCenterSchema,
+  updateEducationalCenterSchema,
+} = require("../validation/educationalcenter.validation");
 
 const getAllEducationalCenters = async (req, res) => {
   try {
@@ -7,7 +11,7 @@ const getAllEducationalCenters = async (req, res) => {
 
     const filters = {};
     if (name) filters.name = { [Op.like]: `%${name}%` };
-    if (regionId) filters.region = regionId;
+    if (regionId) filters.regionId = regionId;
     if (createdBy) filters.createdBy = createdBy;
 
     const limit = parseInt(take);
@@ -30,8 +34,6 @@ const getAllEducationalCenters = async (req, res) => {
   }
 };
 
-module.exports = { getAllEducationalCenters };
-
 const getEducationalCenterById = async (req, res) => {
   try {
     const center = await EducationalCenter.findByPk(req.params.id);
@@ -44,21 +46,43 @@ const getEducationalCenterById = async (req, res) => {
 
 const createEducationalCenter = async (req, res) => {
   try {
-    const center = await EducationalCenter.create(req.body);
+    
+    const { error } = createEducationalCenterSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { name, image, regionId, address, phoneNumber } = req.body;
+
+    const center = await EducationalCenter.create({
+      name,
+      image,
+      regionId,
+      address,
+      phoneNumber,
+    });
     res.status(201).json(center);
   } catch (error) {
+    console.error("Error creating EducationalCenter:", error);
     res.status(400).json({ message: error.message });
   }
 };
 
 const updateEducationalCenter = async (req, res) => {
   try {
+  
+    const { error } = updateEducationalCenterSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const center = await EducationalCenter.findByPk(req.params.id);
     if (!center) return res.status(404).json({ message: "Not found" });
 
     await center.update(req.body);
     res.json(center);
   } catch (error) {
+    console.error("Error updating EducationalCenter:", error);
     res.status(400).json({ message: error.message });
   }
 };

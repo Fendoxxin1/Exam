@@ -1,7 +1,6 @@
 const { Op } = require("sequelize");
 const Subject = require("../models/subject.model");
 
-// Get all subjects with pagination, sorting, and search
 const getSubjects = async (req, res) => {
   try {
     const {

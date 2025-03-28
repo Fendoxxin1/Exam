@@ -11,10 +11,10 @@ const router = express.Router();
  *   description: API endpoints for managing resource categories
  */
 
-// **VALIDATION RULES**
+
 const categoryValidation = [
   body("name").notEmpty().withMessage("Name is required"),
-  body("img").optional(),
+  body("image").optional(),
 ];
 
 const idValidation = [
@@ -106,7 +106,7 @@ router.get("/:id", idValidation, getCategoryById);
  *             properties:
  *               name:
  *                 type: string
- *               img:
+ *               image:
  *                 type: string
  *                 nullable: true
  *     responses:
