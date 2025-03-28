@@ -2,6 +2,7 @@ const express = require("express");
 const { body, query, param } = require("express-validator");
 const {
   getResources,
+  getResourceById,
   createResource,
   updateResource,
   deleteResource,
@@ -16,13 +17,12 @@ const router = express.Router();
  *   description: API endpoints for managing resources
  */
 
-
 const resourceValidation = [
   body("name").notEmpty().withMessage("Name is required"),
   body("media").notEmpty().withMessage("Media is required"),
   body("description").optional(),
   body("createdBy").isInt().withMessage("createdBy must be an integer"),
-  body("categoryid").isInt().withMessage("categoryid must be an integer"),
+  body("categoryId").isInt().withMessage("categoryId must be an integer"),
 ];
 
 const idValidation = [
@@ -63,7 +63,7 @@ const idValidation = [
  *           type: string
  *         description: Filter by resource name
  *       - in: query
- *         name: categoryid
+ *         name: categoryId
  *         schema:
  *           type: integer
  *         description: Filter by category ID
@@ -84,11 +84,32 @@ router.get(
     query("sortBy").optional().isString(),
     query("order").optional().isIn(["asc", "desc"]),
     query("name").optional().isString(),
-    query("categoryid").optional().isInt(),
+    query("categoryId").optional().isInt(),
     query("createdBy").optional().isInt(),
   ],
   getResources
 );
+
+/**
+ * @swagger
+ * /resources/{id}:
+ *   get:
+ *     summary: Get a single resource by ID
+ *     tags: [Resources]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Resource ID
+ *     responses:
+ *       200:
+ *         description: Resource data
+ *       404:
+ *         description: Resource not found
+ */
+router.get("/:id", idValidation, getResourceById);
 
 /**
  * @swagger
@@ -112,7 +133,7 @@ router.get(
  *                 nullable: true
  *               createdBy:
  *                 type: integer
- *               categoryid:
+ *               categoryId:
  *                 type: integer
  *     responses:
  *       201:
@@ -149,7 +170,7 @@ router.post("/", resourceValidation, createResource);
  *                 nullable: true
  *               createdBy:
  *                 type: integer
- *               categoryid:
+ *               categoryId:
  *                 type: integer
  *     responses:
  *       200:

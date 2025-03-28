@@ -1,6 +1,6 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const { getCategories, createCategory, deleteCategory } = require("../controller/resourceCategory.controller");
+const { getCategories, getCategoryById, createCategory, deleteCategory } = require("../controller/resourceCategory.controller");
 
 const router = express.Router();
 
@@ -69,6 +69,27 @@ router.get(
   ],
   getCategories
 );
+
+/**
+ * @swagger
+ * /categories/{id}:
+ *   get:
+ *     summary: Get a single category by ID
+ *     tags: [ResourceCategories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Category ID
+ *     responses:
+ *       200:
+ *         description: Category retrieved successfully
+ *       404:
+ *         description: Category not found
+ */
+router.get("/:id", idValidation, getCategoryById);
 
 /**
  * @swagger

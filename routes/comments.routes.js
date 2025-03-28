@@ -1,6 +1,6 @@
 const express = require("express");
 const { body, query, param } = require("express-validator");
-const { getComments, createComment, deleteComment } = require("../controller/comment.controller");
+const { getComments, getCommentById, createComment, deleteComment } = require("../controller/comment.controller");
 
 const router = express.Router();
 
@@ -56,10 +56,10 @@ const idValidation = [
  *           type: integer
  *         description: Filter by userId
  *       - in: query
- *         name: educationalId
+ *         name: educationalcenterId
  *         schema:
  *           type: integer
- *         description: Filter by educationalId
+ *         description: Filter by educationalcenterId
  *     responses:
  *       200:
  *         description: A list of filtered and sorted comments
@@ -76,6 +76,27 @@ router.get(
   ],
   getComments
 );
+
+/**
+ * @swagger
+ * /comments/{id}:
+ *   get:
+ *     summary: Get a single comment by ID
+ *     tags: [Comments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Comment ID
+ *     responses:
+ *       200:
+ *         description: Comment retrieved successfully
+ *       404:
+ *         description: Comment not found
+ */
+router.get("/:id", idValidation, getCommentById);
 
 /**
  * @swagger
@@ -96,7 +117,7 @@ router.get(
  *                 type: number
  *               userId:
  *                 type: integer
- *               educationalId:
+ *               educationalcenterId:
  *                 type: integer
  *     responses:
  *       201:

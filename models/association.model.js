@@ -8,7 +8,8 @@ const Profession = require("./profession.model");
 const Subject = require("./subject.model");
 const Like = require("./like.model");
 const Region = require("./regions.model");
-const Resources = require("./resource.model");
+const Subjects = require("./subject.model");
+const Resource = require("./resource.model");
 const ResourceCategory = require("./resourceCategory.model");
 const Comment = require("./comment.model");
 
@@ -54,11 +55,11 @@ Comment.belongsTo(User, { foreignKey: "userId" });
 educationalcenter.hasMany(Comment, { foreignKey: "educationalId" });
 Comment.belongsTo(educationalcenter, { foreignKey: "educationalId" });
 
-Resources.belongsTo(ResourceCategory, { foreignKey: "categoryId" });
-ResourceCategory.hasMany(Resources, { foreignKey: "categoryId" });
+Resource.belongsTo(ResourceCategory, { foreignKey: "categoryId" });
+ResourceCategory.hasMany(Resource, { foreignKey: "categoryId" });
 
-Resources.belongsTo(User, { foreignKey: "createby" });
-User.hasMany(Resources, { foreignKey: "createby" });
+Resource.belongsTo(User, { foreignKey: "createby" });
+User.hasMany(Resource, { foreignKey: "createby" });
 
 StudyProgram.belongsTo(Subject, { foreignKey: "subjectId" });
 Subject.hasMany(StudyProgram, { foreignKey: "subjectId" });
@@ -73,8 +74,8 @@ module.exports = {
   Profession,
   Like,
   Region,
-  Subject,
-  Resources,
+  Subjects,
+  Resource,
   ResourceCategory,
   Comment,
 };

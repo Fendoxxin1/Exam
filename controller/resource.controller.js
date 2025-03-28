@@ -25,13 +25,37 @@ exports.getResources = async (req, res) => {
   }
 };
 
+// ✅ getResourceById qo‘shildi
+exports.getResourceById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid resource ID" });
+    }
+
+    const resource = await Resource.findByPk(id);
+
+    if (!resource) {
+      return res.status(404).json({ error: "Resource not found" });
+    }
+
+    res.json(resource);
+  } catch (err) {
+    console.error("Error fetching resource:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 exports.createResource = async (req, res) => {
   try {
-    if (!req.body.name || typeof req.body.name !== "string") {
+    const { name, media, description, createdBy, categoryId } = req.body;
+
+    if (!name || typeof name !== "string") {
       return res.status(400).json({ error: "Valid resource name is required" });
     }
 
-    const resource = await Resource.create(req.body);
+    const resource = await Resource.create({ name, media, description, createdBy, categoryId });
     res.status(201).json(resource);
   } catch (err) {
     console.error("Error creating resource:", err);
