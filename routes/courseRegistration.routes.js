@@ -2,7 +2,7 @@ const express = require("express");
 const { body } = require("express-validator");
 const authenticate=require("../middleware/auth")
 const {authorize} = require("../middleware/role")
-const CourseRegistration = require("../controller/userEnrolment.controller");
+const CourseRegistration = require("../controller/courseRegistration.controller");
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ const router = express.Router();
  *             properties:
  *               userId:
  *                 type: integer
- *               learningId:
+ *               educationalId:
  *                 type: integer
  *               filialId:
  *                 type: integer
@@ -38,7 +38,7 @@ router.post(
   "/",
   [
     body("userId").isInt().withMessage("UserId must be an integer"),
-    body("learningId").isInt().withMessage("LearningId must be an integer"),
+    body("educationalId").isInt().withMessage("educationalId must be an integer"),
     body("filialId").isInt().withMessage("FilialId must be an integer"),
   ],authenticate,
   CourseRegistration.createUserEnrolment

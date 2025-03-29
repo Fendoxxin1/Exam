@@ -119,7 +119,6 @@ router.post(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Profession'
  */
 router.get("/professions/:id", professionController.getProfessionById);
 

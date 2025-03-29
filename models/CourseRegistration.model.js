@@ -14,7 +14,7 @@ const UserEnrollment = db.define("UserEnrollment", {
     type: DataTypes.BIGINT,
     allowNull: false,
   },
-  branchid: {
+  filialId: {
     type: DataTypes.BIGINT,
     allowNull: false,
   },

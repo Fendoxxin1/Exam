@@ -18,6 +18,7 @@ const Subject = require("./routes/subject.routes");
 const uploads = require("./routes/uploads.routes");
 const path = require("path");
 const sessionRoutes = require("./routes/session.routes");
+const userEnrolmentRoutes = require("./routes/courseRegistration.routes");
 const logger = require("./middleware/logger");
 const excelRoutes = require("./routes/exel.routes");
 
@@ -71,6 +72,7 @@ app.use("/api", Subject);
 app.use("/api/", uploads);
 app.use("/api", sessionRoutes);
 app.use("/api/excel", excelRoutes);
+app.use("/api/userenrolments", userEnrolmentRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectDb();

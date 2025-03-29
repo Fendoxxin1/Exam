@@ -35,20 +35,22 @@ const getProfessionById = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid ID format" });
     }
-    const professions = await Profession.findAll({
-      where: whereCondition,
-      limit: parseInt(limit),
-      offset: (parseInt(page) - 1) * parseInt(limit),
-      order: [[sort, order]],
 
+    const limit = req.query.limit || 10;
+    const page = req.query.page || 1;
+    const sort = req.query.sort || "id";
+    const order = req.query.order || "ASC";
+
+    const profession = await Profession.findOne({
+      where: { id: id },
       include: [
         {
           model: StudyProgram,
-          as: "StudyPrograms",
         },
       ],
     });
-    if (!professions) {
+
+    if (!profession) {
       return res.status(404).json({ message: "Profession not found" });
     }
 
