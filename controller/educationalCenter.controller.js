@@ -12,11 +12,11 @@ const Comment = require("../models/comment.model");
 
 const getAllEducationalCenters = async (req, res) => {
   try {
-    const { name, regionId, createdBy, page = 1, take = 10 } = req.query;
+    const { name, region, createdBy, page = 1, take = 10 } = req.query;
 
     const filters = {};
     if (name) filters.name = { [Op.like]: `%${name}%` };
-    if (regionId) filters.regionId = regionId;
+    if (region) filters.region = region;
     if (createdBy) filters.createdBy = createdBy;
 
     const limit = parseInt(take);
@@ -119,12 +119,12 @@ const createEducationalCenter = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { name, image, regionId, address, phoneNumber } = req.body;
+    const { name, image, region, address, phoneNumber } = req.body;
 
     const center = await EducationalCenter.create({
       name,
       image,
-      regionId,
+      region,
       address,
       phoneNumber,
     });

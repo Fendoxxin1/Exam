@@ -9,9 +9,9 @@ const createEducationalCenterSchema = Joi.object({
   image: Joi.string().optional().messages({
     "string.base": "Image must be a string",
   }),
-  regionId: Joi.number().integer().required().messages({
-    "number.base": "RegionId must be an integer",
-    "any.required": "RegionId is required",
+  region: Joi.number().integer().required().messages({
+    "number.base": "region must be an integer",
+    "any.required": "region is required",
   }),
   address: Joi.string().required().messages({
     "string.base": "Address must be a string",

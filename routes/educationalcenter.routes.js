@@ -24,10 +24,10 @@ const controller = require("../controller/educationalCenter.controller");
  *           type: string
  *         description: Filter by educational center name
  *       - in: query
- *         name: regionId
+ *         name: region
  *         schema:
  *           type: integer
- *         description: Filter by regionId 
+ *         description: Filter by region 
  *       - in: query
  *         name: createdBy
  *         schema:
@@ -67,7 +67,7 @@ router.get("/educationalcenter", controller.getAllEducationalCenters);
  *                 type: string
  *               image:
  *                 type: string
- *               regionId:
+ *               region:
  *                 type: integer
  *               address:
  *                 type: string
@@ -122,7 +122,7 @@ router.get("/educationalcenter/:id", controller.getEducationalCenterById);
  *                 type: string
  *               image:
  *                 type: string
- *               regionId:
+ *               region:
  *                 type: integer
  *               address:
  *                 type: string

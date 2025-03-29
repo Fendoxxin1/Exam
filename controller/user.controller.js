@@ -248,7 +248,6 @@ const updateUser = async (req, res) => {
 
     const { password, ...rest } = req.body;
 
-    // Agar password bo'lsa, xesh qilamiz
     let hashedPassword = user.password;
     if (password) {
       hashedPassword = bcrypt.hashSync(password, 10);
