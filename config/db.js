@@ -17,10 +17,19 @@ const { Sequelize } = require("sequelize");
 //   dialect: "mysql",
 // });
 
-const db = new Sequelize("exam3", "root", "billybutcher1", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const db = new Sequelize(
+  "mysql://root:yajMwgiBvtCeCFonVkhhMaKFvqyNrRKp@switchyard.proxy.rlwy.net:24789/railway",
+  {
+    dialect: "mysql",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+    logging: false,
+  }
+);
 
 async function connectDb() {
   try {
