@@ -43,7 +43,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://your-railway-app-url.up.railway.app",
+        url: "https://perpetual-heart-production.up.railway.app/api",
       },
     ],
     components: {
