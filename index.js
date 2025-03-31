@@ -21,8 +21,16 @@ const sessionRoutes = require("./routes/session.routes");
 const userEnrolmentRoutes = require("./routes/courseRegistration.routes");
 const logger = require("./middleware/logger");
 const excelRoutes = require("./routes/exel.routes");
+const cors = require("cors");
 
 const app = express();
+app.use(
+  cors({
+    origin: "*", // Yoki aniq frontend domenini qo'ying
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 const swaggerOptions = {
@@ -35,7 +43,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://your-railway-app-url.up.railway.app",
+        url: "https://your-railway-app-url.up.railway.app",
       },
     ],
     components: {
