@@ -35,7 +35,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://your-railway-app-url.up.railway.app",
+        url: "http://your-railway-app-url.up.railway.app",
       },
     ],
     components: {
