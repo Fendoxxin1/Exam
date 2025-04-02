@@ -1,5 +1,4 @@
-const { Like } = require("../models/association.model");
-
+const { UserLikes } = require("../models/association.model");
 exports.createLike = async (req, res) => {
   try {
     let { userId, educationalCenterId } = req.body;
@@ -11,12 +10,14 @@ exports.createLike = async (req, res) => {
       return res.status(400).json({ error: "Valid userId is required" });
     }
     if (!educationalCenterId || isNaN(educationalCenterId)) {
-      return res.status(400).json({ error: "Valid educationalCenterId is required" });
+      return res
+        .status(400)
+        .json({ error: "Valid educationalCenterId is required" });
     }
 
-    const like = await Like.create({
+    const like = await UserLikes.create({
       userId,
-      educationalcenterId: educationalCenterId,  
+      educationalcenterId: educationalCenterId,
     });
 
     res.status(201).json({ message: "Like added successfully", like });
@@ -34,7 +35,7 @@ exports.deleteLike = async (req, res) => {
       return res.status(400).json({ error: "Invalid like ID" });
     }
 
-    const like = await Like.findByPk(likeId);
+    const like = await UserLikes.findByPk(likeId);
     if (!like) {
       return res.status(404).json({ message: "Like not found" });
     }

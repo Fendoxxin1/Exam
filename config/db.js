@@ -16,7 +16,6 @@ const { Sequelize } = require("sequelize");
 //   host: "localhost",
 //   dialect: "mysql",
 // });
-
 const db = new Sequelize(
   "mysql://root:yajMwgiBvtCeCFonVkhhMaKFvqyNrRKp@switchyard.proxy.rlwy.net:24789/railway",
   {
@@ -34,8 +33,8 @@ const db = new Sequelize(
 async function connectDb() {
   try {
     await db.authenticate();
-    // console.log("db connected");
-    // await db.sync({ force: true });
+    console.log("db connected");
+    await db.sync({ force: true });
     console.log("db synced");
   } catch (error) {
     console.log(error);

@@ -5,7 +5,7 @@ const CourseRegistration = require("./CourseRegistration.model");
 const StudyProgram = require("./studyprogram.model");
 const EducenterProgram = require("./educenterprogram.model");
 const Profession = require("./profession.model");
-const Like = require("./like.model");
+const UserLikes = require("./like.model");
 const Region = require("./regions.model");
 const Subjects = require("./subject.model");
 const Resource = require("./resource.model");
@@ -25,9 +25,9 @@ LearningCenter.belongsToMany(User, {
   foreignKey: "educationalId",
 });
 
-User.belongsToMany(LearningCenter, { through: Like, foreignKey: "userId" });
+User.belongsToMany(LearningCenter, { through: UserLikes, foreignKey: "userId" });
 LearningCenter.belongsToMany(User, {
-  through: Like,
+  through: UserLikes,
   foreignKey: "educationalId",
 });
 
@@ -72,7 +72,7 @@ module.exports = {
   StudyProgram,
   EducenterProgram,
   Profession,
-  Like,
+  UserLikes,
   Region,
   Subjects,
   Resource,
