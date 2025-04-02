@@ -35,8 +35,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://perpetual-heart-production.up.railway.app/api",
-        // url: "http://localhost:3000/api",
+        // url: "https://perpetual-heart-production.up.railway.app/api",
+        url: "http://localhost:3000/api",
       },
     ],
     components: {
@@ -79,6 +79,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 connectDb();
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.listen(3000, () => console.log(`Server started on port 3000`));
