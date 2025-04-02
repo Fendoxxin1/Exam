@@ -6,7 +6,7 @@ const { Sequelize } = require("sequelize");
 //   logging: false,
 // });
 
-const db = new Sequelize("songi", "root", "1234", {
+const db = new Sequelize("bir", "root", "1234", {
   host: "localhost",
   dialect: "mysql",
   logging: false,
@@ -34,8 +34,8 @@ async function connectDb() {
   try {
     await db.authenticate();
     console.log("db connected");
-    await db.sync({ force: true });
-    console.log("db synced");
+    // await db.sync({ force: true });
+    // console.log("db synced");
   } catch (error) {
     console.log(error);
   }
