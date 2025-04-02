@@ -12,29 +12,29 @@ const { Sequelize } = require("sequelize");
 //   logging: false,
 // });
 
-// const db = new Sequelize("exam3", "root", "billybutcher1", {
-//   host: "localhost",
-//   dialect: "mysql",
-// });
-const db = new Sequelize(
-  "mysql://root:yajMwgiBvtCeCFonVkhhMaKFvqyNrRKp@switchyard.proxy.rlwy.net:24789/railway",
-  {
-    dialect: "mysql",
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-    logging: false,
-  }
-);
+const db = new Sequelize("exam3", "root", "billybutcher1", {
+  host: "localhost",
+  dialect: "mysql",
+});
+// const db = new Sequelize(
+//   "mysql://root:yajMwgiBvtCeCFonVkhhMaKFvqyNrRKp@switchyard.proxy.rlwy.net:24789/railway",
+//   {
+//     dialect: "mysql",
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//     logging: false,
+//   }
+// );
 
 async function connectDb() {
   try {
     await db.authenticate();
-    // console.log("db connected");
-    // await db.sync({ force: true });
+    console.log("db connected");
+    await db.sync({ force: true });
     console.log("db synced");
   } catch (error) {
     console.log(error);
