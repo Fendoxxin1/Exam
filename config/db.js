@@ -6,29 +6,29 @@ const { Sequelize } = require("sequelize");
 //   logging: false,
 // });
 
-// const db = new Sequelize("songi", "root", "1234", {
-//   host: "localhost",
-//   dialect: "mysql",
-//   logging: false,
-// });
+const db = new Sequelize("songi", "root", "1234", {
+  host: "localhost",
+  dialect: "mysql",
+  logging: false,
+});
 
 // const db = new Sequelize("exam3", "root", "billybutcher1", {
 //   host: "localhost",
 //   dialect: "mysql",
 // });
-const db = new Sequelize(
-  "mysql://root:yajMwgiBvtCeCFonVkhhMaKFvqyNrRKp@switchyard.proxy.rlwy.net:24789/railway",
-  {
-    dialect: "mysql",
-    dialectOptions: {
-      // ssl: {
-      //   require: true,
-      //   rejectUnauthorized: false,
-      // },
-    },
-    logging: false,
-  }
-);
+// const db = new Sequelize(
+//   "mysql://root:CfJTQGvpJbnQYBYJwelkoCMrbpEYgGyJ@shuttle.proxy.rlwy.net:39859/railway",
+//   {
+//     dialect: "mysql",
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//     logging: false,
+//   }
+// );
 
 async function connectDb() {
   try {
