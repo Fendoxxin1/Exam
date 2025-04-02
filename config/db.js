@@ -34,8 +34,8 @@ const db = new Sequelize(
 async function connectDb() {
   try {
     await db.authenticate();
-    console.log("db connected");
-    await db.sync({ force: true });
+    // console.log("db connected");
+    // await db.sync({ force: true });
     console.log("db synced");
   } catch (error) {
     console.log(error);
