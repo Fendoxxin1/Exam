@@ -1,7 +1,7 @@
 const { db } = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const UserLikes = db.define("Like", {
+const UserLikes = db.define("UserLikes", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   userId: {
     type: DataTypes.INTEGER,
