@@ -113,12 +113,16 @@ router.get("/:id", idValidation, getCommentById);
  *             properties:
  *               comment:
  *                 type: string
+ *                 example: "hello"
  *               star:
  *                 type: number
+ *                 example: 4.5
  *               userId:
  *                 type: integer
+ *                 example: 1
  *               educationalcenterId:
  *                 type: integer
+ *                 example: 1
  *     responses:
  *       201:
  *         description: Comment created successfully

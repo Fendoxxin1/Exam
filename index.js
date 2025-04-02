@@ -36,7 +36,7 @@ const swaggerOptions = {
     servers: [
       {
         // url: "https://perpetual-heart-production.up.railway.app/api",
-        url: "http://localhost:3000/api",
+        url: "http://13.127.148.74:3000/api",
       },
     ],
     components: {
